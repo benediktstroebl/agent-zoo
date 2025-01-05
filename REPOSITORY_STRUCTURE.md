@@ -20,21 +20,18 @@ agent-zoo/
 │
 ├── shared_tools/
 │   ├── communication.py
-│   ├── cost_estimator.py
-│   ├── internet_proxy.py
-│   ├── sandbox.py
-│   └── versioning.py
+│   ├── web_browser.py
+│   └── evaluation.py
+│
 │
 ├── system/
-│   ├── environment.py
-│   ├── agent_manager.py
-│   └── task_manager.py
+│   └── agent_manager.py
 │
 ├── tests/
 │   └── ...
 ├── docs/
 │   └── ...
-├── scripts/
+├── utils/
 │   └── ...
 ├── .gitignore
 ├── LICENSE
@@ -83,19 +80,11 @@ agent-zoo/
 ### Contents
 1. `communication.py`  
    - Functions like `write_to_blog()`, `send_message()`, or other means of inter-agent communication (if applicable).
-
-2. `cost_estimator.py`  
-   - A tool to estimate resource usage or financial costs for certain tasks.  
-   - Could expose a `check_task_cost(task)` function.
-
-3. `internet_proxy.py`  
-   - A controlled interface to the Internet (e.g., `send_request()`) with logging, restrictions, or safety checks.
-
-4. `sandbox.py`  
-   - Provides a specialized environment to test agents’ code in isolation (e.g., `run_agent_sandbox()` with constraints).
-
-5. `versioning.py`  
-   - Logic for comparing code versions or tracking changes. Could also be used for rollback or “differencing” agent code.
+2. `web_browser.py`  
+   - Functions like `browse_web()`, `search_web()`, or other means of interacting with the web (if applicable).
+3. `evaluation.py`  
+   - Functions like `run_evaluation()`, `get_leaderboard()`, or other means of evaluating agents (if applicable).
+4. Other tools
 
 ---
 
@@ -106,54 +95,29 @@ agent-zoo/
 - Hidden from the workspace so agents do not directly manipulate environment controls.
 
 ### Contents
-1. `environment.py`  
-   - Core environment or “main loop” logic that ties everything together.  
-   - Could handle initialization, global state, and orchestrations that run in the background.
 
-2. `agent_manager.py`  
+1. `agent_manager.py`  
    - Responsible for **registering** and **unregistering** agents.  
    - Maintains a list/dict of active agents and handles concurrency, lifecycles, etc.
-
-3. `task_manager.py`  
-   - Manages tasks, schedules them for agents, and potentially handles reassignments if an agent fails or is removed.
+   - This list is used to populate and update system prompts of all agents with current list of active agents.
 
 ---
 
 ## 5. `tests/`
 
-### Purpose
 - Central location for **unit tests** and **integration tests**.
-- Ensures that code quality remains high and changes don’t break core functionality.
-
-### Typical Layout
-- `test_agents.py`: Tests specific agent behaviors.  
-- `test_system.py`: Tests environment, agent manager, or task manager logic.  
-- `test_tasks.py`: Tests evaluations or aggregator logic.
 
 ---
 
 ## 6. `docs/`
 
-### Purpose
-- Holds longer-form **documentation** such as architectural diagrams, integration guides, or conceptual overviews.
-
-### Possible Files
-- `architecture_overview.md`: Explains the system design.  
-- `agent_integration_guide.md`: Guidance for developing or extending an agent.  
-- `tasks_overview.md`: Explanation of how tasks are structured.  
-- `safety_considerations.md`: Policies and best practices for controlling internet usage, cost, etc.
 
 ---
 
 ## 7. `scripts/`
 
-### Purpose
 - Stores **utility scripts** for developers (not for the agents).  
 - Common tasks like environment setup, linting, or running tests.
-
-### Possible Files
-- `setup.sh`: Installs dependencies, sets up any environment variables.  
-- `run_tests.sh`: Wrapper script for test commands.
 
 ## 8. Other Top-Level Files
 
@@ -165,6 +129,3 @@ agent-zoo/
 
 3. **`README.md`**  
    - The main readme for the repository, providing a **high-level** overview and instructions on how to get started.
-
-4. **`requirements.txt`**  
-   - System-wide dependencies, so that contributors (or CI/CD) can install everything needed for the project.
