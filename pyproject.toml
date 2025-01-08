@@ -6,4 +6,11 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "openai>=1.59.3",
+    "smolagents",
 ]
+
+[tool.uv.workspace]
+members = ["agent-zoo/workspace/agents/basic_agent"]
+
+[tool.uv.sources]
+smolagents = { git = "https://github.com/huggingface/smolagents.git" }
