@@ -1,20 +1,26 @@
-from typing import List, Union
+from typing import List, Union, Dict
 from pathlib import Path 
 from attrs import field, define 
 import threading
+from tasks.task import Task
+from agents.agent import Agent
+from configs.compute_config import DockerComputeConfig
+from configs.permission_config import PermissionsConfig
+from shared_tools.abstract_tool import AbstractSharedTool
 
 
 @define 
 class AgentZoo:
     agents: List[Path] = field(default_factory=list)
-    shared_tools: List[SharedTool] = field(default_factory=list)
+    shared_tools: List[AbstractSharedTool] = field(default_factory=list)
     tasks: List[Task] = field(default_factory=list)
     compute_config: Union[DockerComputeConfig,List[DockerComputeConfig]] = DockerComputeConfig()
     permissions_config: PermissionsConfig = PermissionsConfig()
 
     def __attrs_post_init__(self): 
-        self.agents = [Path(agent) for agent in self.agents]
-        self.shared_tools = [SharedTool(tool) for tool in self.shared_tools]
+        self.agents = Agent.get_agents(self.agents)
+        self.shared_tools = [AbstractSharedTool(tool) for tool in self.shared_tools]
+        self.tasks = Task.load_tasks(self.tasks)
 
     def run(self):
         """
@@ -39,6 +45,7 @@ class AgentZoo:
         for agent in self.agents:
             thread = threading.Thread(
                 target=agent.run,
+                args=(self.tasks,)
             )
             threads.append(thread)
             thread.start()

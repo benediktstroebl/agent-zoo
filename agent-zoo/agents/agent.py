@@ -1,17 +1,26 @@
 import docker
 from pathlib import Path
 from tasks.task import Task
-from typing import List
+from typing import List, Dict
 import os
 
 class Agent:
-    def __init__(self, path: Path, name: str, requirements_name: str = 'requirements.txt', tasks: List[Task] = []):
+    _object_registry: Dict[str, 'Agent'] = {}
+    
+    def __init__(self, path: Path, name: str, requirements_name: str = 'requirements.txt'):
         self.path = path
         self.name = name
         self.entrypoint = 'agent.py'
         self.requirements_name = requirements_name
         self.container: docker.models.containers.Container
-        self.tasks: List[Task] = tasks
+        self.register()
+        
+    def register(self):
+        Agent._object_registry[self.name] = self
+        
+    @classmethod
+    def get_agents(cls, agent_names: List[str]) -> Dict[str, 'Agent']:
+        return {name: cls._object_registry[name] for name in agent_names}
         
     def _start_container(self):
         docker_client = docker.from_env()
@@ -40,21 +49,24 @@ class Agent:
             )
     
     
-    def initialize(self, tasks: List[Task]):
+    def initialize(self):
         try:
             self.container = self._start_container()
         except Exception as e:
             raise Exception(f"Failed to start container: {e} for agent {self.name}")
         
 
-    def run(self):
+    def run(self, tasks: List[Task]):
         """Run an agent with specific task information."""
         
         try:
             # Run the agent
             result = self.container.exec_run(
                 cmd=["python", "/workspace/agent.py"],
-                environment={name: var for task in self.tasks for name, var in task.environment_vars.items()},
+                environment={
+                    "AGENT_NAME": self.name,
+                    **{name: var for task in tasks for name, var in task.environment_vars.items()}
+                },
                 detach=False,  # Wait for completion
             )
             
