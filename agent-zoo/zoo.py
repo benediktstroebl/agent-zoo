@@ -1,6 +1,8 @@
 from typing import List, Union
 from pathlib import Path 
 from attrs import field, define 
+import threading
+
 
 @define 
 class AgentZoo:
@@ -14,7 +16,7 @@ class AgentZoo:
         self.agents = [Path(agent) for agent in self.agents]
         self.shared_tools = [SharedTool(tool) for tool in self.shared_tools]
 
-    def initialize_zoo(self):
+    def run(self):
         """
         loop over agents, initialize them. 
         /home/agent_{i}
@@ -27,12 +29,20 @@ class AgentZoo:
             input to task: eval task_name --agent_path=
         """
         NotImplementedError('todo')
-
-        # loop over agents initialize dockers 
-
-
-        # loop over shared tools, initialize them.
-
+        
         # loop over tasks
-    
-    def run_task(self, task_name: str, agent_path: Path):
+        for task in self.tasks:
+            self.run_task(task.name, task.evaluation_function, task.prompt, task.environment_vars)
+
+        # loop over agents initialize dockers
+        threads = []
+        for agent in self.agents:
+            thread = threading.Thread(
+                target=agent.run,
+            )
+            threads.append(thread)
+            thread.start()
+        
+        # Wait for both agents to complete
+        for thread in threads:
+            thread.join()
