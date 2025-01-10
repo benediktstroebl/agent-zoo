@@ -9,8 +9,5 @@ dependencies = [
     "smolagents",
 ]
 
-[tool.uv.workspace]
-members = ["agent-zoo/workspace/agents/basic_agent"]
-
 [tool.uv.sources]
 smolagents = { git = "https://github.com/huggingface/smolagents.git" }

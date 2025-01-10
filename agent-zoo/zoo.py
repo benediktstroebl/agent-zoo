@@ -49,7 +49,15 @@ class AgentZoo:
             )
             threads.append(thread)
             thread.start()
-        
+
+        # loop over shared tools and initialize them
+        for tool in self.shared_tools:
+            if tool.requires_server:
+                server_thread = threading.Thread(target=tool._init_tool)
+                server_thread.start()
+            else:
+                tool._init_tool()
+
         # Wait for both agents to complete
         for thread in threads:
             thread.join()

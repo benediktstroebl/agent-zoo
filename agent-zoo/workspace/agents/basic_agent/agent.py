@@ -14,13 +14,13 @@ model = LiteLLMModel(model_id="gpt-4o")
 
 import os
 
-os.chdir("/home/azureuser/agent-zoo/agent-zoo/workspace/agents/basic_agent/agent/")
+os.chdir(Path(__file__).resolve().parent)
 
 
 @tool
 def execute_bash(command: str) -> str:
     """
-    Execute a bash command and return its output.
+    Description: Execute a bash command and return its output.
     Will not execute commands requiring internet access.
     Common linux and python packages are available via apt and pip.
     Args:

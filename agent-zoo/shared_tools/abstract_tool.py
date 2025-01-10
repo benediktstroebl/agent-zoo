@@ -7,6 +7,9 @@ class AbstractSharedTool:
     inputs: Dict[str, Dict[str, Union[str, type, bool]]]
     output_type: str
 
+    def __attrs_post_init__(self):
+        self.__sub_init__()
+
     def _init_tool(self):
         """
         Initializes the tool in the docker environment. 
