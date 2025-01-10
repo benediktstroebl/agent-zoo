@@ -6,11 +6,13 @@ import sys
 sys.path.append(str(Path(__file__).parent))
 
 from abstract_tool import AbstractSharedTool
-
+from check_mail import check_mail
+from send_message import send_message
 
 @define 
 class Mail(AbstractSharedTool):
-    tools = []
+    environment_vars: dict = {'MAIL_DIRECTORY': 'mail'}
+
     def __sub_init__(self):
         pass
 
@@ -23,3 +25,8 @@ class Mail(AbstractSharedTool):
         for agent_dir in agent_dirs.values():
             mail_dir = agent_dir / "mail"
             mail_dir.mkdir(parents=True, exist_ok=True)
+
+        self._initialize_tools()
+
+    def _get_tools(self):
+        return [check_mail, send_message]

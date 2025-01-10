@@ -22,6 +22,7 @@ class CooporationBoardAttributes:
 class CooperationBoard(AbstractSharedTool):
     name: str = 'cooperation_board'
     coop_board_attrs: dict = field(default=None)
+    environment_vars: dict = {'COOPERATION_BOARD_PATH': 'cooperation_board'}
 
     def _init_tool(self, workspace_dir, agent_dirs):
         """
@@ -37,6 +38,8 @@ class CooperationBoard(AbstractSharedTool):
 
         with open(fpath, 'w') as f:
             f.write(','.join(attrs) + '\n')
+
+        self._initialize_tools()
 
     def _get_tools(self):
         return [load_coop_board]

@@ -4,13 +4,13 @@ import inspect
 import sys
 
 
-
 class AbstractSharedTool:
     # take this from smolagents 
     name: str
     description: str
     inputs: Dict[str, Dict[str, Union[str, type, bool]]]
     output_type: str
+    environment_vars: Dict[str, str]
 
     def _init_tool(self, workspace_dir, agent_dirs):
         """
@@ -25,6 +25,10 @@ class AbstractSharedTool:
     def _get_tools(self):
         # a function to return all the tools we should register
         pass 
+
+    def _initialize_tools(self):
+        for tool in self._get_tools():
+            self._register_tool(tool)
     
     def _register_tool(func, command_name=None):
         """

@@ -24,3 +24,5 @@ class Blog(AbstractSharedTool):
         for agent_dir in agent_dirs.values():
             blog_dir = agent_dir / "blog"
             blog_dir.mkdir(parents=True, exist_ok=True)
+
+        self._initialize_tools()
