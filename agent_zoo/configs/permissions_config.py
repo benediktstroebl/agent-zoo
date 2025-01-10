@@ -2,7 +2,7 @@ import attrs
 from typing import List, Optional
 
 @attrs.define
-class PermissionConfig:
+class PermissionsConfig:
     description: str = "Simple class to hold agent permissions for agents."
 
     cpu_cores: int = attrs.field(default=2, metadata={"description": "Number of CPU cores to allocate"})
