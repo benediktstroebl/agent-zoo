@@ -1,2 +1,6 @@
 uv.lock
 .python-version
+.env
+**/__pycache__/**
+workspaces/*
+logs/*

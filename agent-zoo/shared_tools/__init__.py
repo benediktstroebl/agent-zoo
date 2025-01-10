@@ -1,1 +1,0 @@
-from leaderboard import CooporationBoardAttributes, CooperationBoard

@@ -1,6 +1,5 @@
 from .task import Task
 
-@Task.register
 class BasicTask(Task):
     def __init__(self):
         super().__init__(
@@ -12,3 +11,5 @@ class BasicTask(Task):
     
     def evaluate(self, response: str) -> bool:
         return response.lower() == "paris"
+    
+basic_task = BasicTask()

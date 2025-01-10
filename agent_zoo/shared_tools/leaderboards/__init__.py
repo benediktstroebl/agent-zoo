@@ -1,0 +1,1 @@
+from load_board import load_coop_board

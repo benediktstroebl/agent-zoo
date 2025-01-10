@@ -1,11 +1,20 @@
-from agent_zoo.zoo import Zoo
-from agent_zoo.tasks.task import Task
+from agent_zoo.zoo import AgentZoo
+from agent_zoo.configs.compute_config import DockerComputeConfig
+from agent_zoo.configs.permissions_config import PermissionsConfig
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def main():
-    zoo = Zoo(
-        agents=["basic_agent"],
-        tasks=['basic_task']
+    zoo = AgentZoo(
+        agents=["basic_agent", "basic_agent_2"],
+        tasks=['basic_task'],
+        compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
+        permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
+        shared_tools=[],
+        workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml')
     )
     zoo.run()
 

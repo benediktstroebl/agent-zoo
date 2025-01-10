@@ -12,10 +12,13 @@ load_dotenv()
 
 model = LiteLLMModel(model_id="gpt-4o")
 
+<<<<<<< HEAD:agent-zoo/workspace/agents/basic_agent/agent.py
 import os
 
 os.chdir(Path(__file__).resolve().parent)
 
+=======
+>>>>>>> 0990bd85c99576b0500c9aab703c84582e9e767c:agent_zoo/workspace/agents/basic_agent/agent.py
 
 @tool
 def execute_bash(command: str) -> str:
@@ -226,7 +229,6 @@ def explore_repo(command: str, path: str, options: Optional[Dict] = None) -> str
     except Exception as e:
         return f"Error during repository exploration: {str(e)}"
     
-    
 @tool
 def analyze_code(command: str, path: str) -> str:
     """
@@ -373,5 +375,15 @@ agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(),
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
-GradioUI(agent).launch()
+if __name__ == "__main__":
+    import os
+    import json
+    task_prompt = os.getenv("TASK_PROMPT_basic_task")
+    agent.run(task_prompt)
+    
+    # write agent.logs to json file in /workspace/agents/logs/basic_agent.json
+    os.makedirs('/home/logs', exist_ok=True)
+    with open('/home/logs/basic_agent.json', 'w') as f:
+        json.dump(str(agent.logs), f)
+
 
