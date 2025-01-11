@@ -1,9 +1,8 @@
-import os 
-
 def write_to_blog(blog_content):
     """
     Write to the blog of an agent.
     """
+    import os 
     agent_name = os.environ['AGENT_NAME']
     ROOT_DIR = os.environ['AGENT_ZOO_ROOT']
     agent_path = os.path.join(ROOT_DIR, agent_name)

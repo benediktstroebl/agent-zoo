@@ -1,11 +1,3 @@
-import logging
-import os
-from pydantic import BaseModel
-from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
-
-logger = logging.getLogger(__name__)
-
 def send_slack_message(message: str) -> bool:
     """
     Send a request to a human via Slack.
@@ -16,8 +8,14 @@ def send_slack_message(message: str) -> bool:
     Returns:
         bool: True if message was sent successfully, False otherwise
     """
+    import logging
+    import os
+    from slack_sdk import WebClient
+    from slack_sdk.errors import SlackApiError
+
+    logger = logging.getLogger(__name__)
     # Get token from environment variables
-    slack_token = os.environ.get('SLACK_BOT_TOKEN')
+    slack_token = os.environ.get("SLACK_BOT_TOKEN")
     if not slack_token:
         logger.error("SLACK_BOT_TOKEN not found in environment variables")
         return False
@@ -25,12 +23,12 @@ def send_slack_message(message: str) -> bool:
     # Initialize the Slack client
     client = WebClient(token=slack_token)
 
-    channel = os.environ.get('SLACK_CHANNEL')
+    channel = os.environ.get("SLACK_CHANNEL")
     if not channel:
         logger.error("SLACK_CHANNEL not found in environment variables")
         return False
     
-    user = os.environ.get('SLACK_USER')
+    user = os.environ.get("SLACK_USER")
     if not user:
         logger.error("SLACK_USER not found in environment variables")
         return False
