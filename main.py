@@ -8,8 +8,6 @@ load_dotenv()
 
 from agent_zoo.shared_tools.mail.mail import Mail
 
-
-
 def main():
     zoo = AgentZoo(
         agents=["basic_agent", "basic_agent_2"],

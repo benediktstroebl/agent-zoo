@@ -100,7 +100,7 @@ class Agent:
             self.logger.error(f"Failed to start container for agent {self.name}: {e}")
             raise Exception(f"Failed to start container: {e} for agent {self.name}")
         
-    def run(self, tasks: List[Task]):
+    def run(self):
         try:
             self.logger.info(f"Initializing agent {self.name}")
             self.initialize()
@@ -109,8 +109,8 @@ class Agent:
                 cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"],
                 environment={
                     "AGENT_NAME": self.name,
-                    **{name: var for task in tasks for name, var in task.environment_vars.items()},
-                    **{f"TASK_PROMPT_{task.name}": task.prompt for task in tasks}
+                    "TASK_PROMPT": self.workspace.prompt,
+                    **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
                 },
                 detach=False,
                 stream=True

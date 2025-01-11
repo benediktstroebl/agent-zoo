@@ -398,12 +398,12 @@ agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(),
 if __name__ == "__main__":
     import os
     import json
-    task_prompt = os.getenv("TASK_PROMPT_basic_task")
+    task_prompt = os.getenv("TASK_PROMPT")
     agent.run(task_prompt)
     
     # write agent.logs to json file in /workspace/agents/logs/basic_agent.json
     os.makedirs('/home/logs', exist_ok=True)
     with open('/home/logs/basic_agent.json', 'w') as f:
-        json.dump(str(agent.logs), f)
+        json.dump(agent.to_json(), f)
 
 
