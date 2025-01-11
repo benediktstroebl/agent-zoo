@@ -11,7 +11,7 @@ class SlackRequest(BaseModel):
     channel: str
     user: str
 
-def send_slack_message(request: SlackRequest) -> bool:
+def send_slack_message(message: str) -> bool:
     """
     Send a request to a human via Slack.
     
@@ -30,12 +30,24 @@ def send_slack_message(request: SlackRequest) -> bool:
     # Initialize the Slack client
     client = WebClient(token=slack_token)
 
+    channel = os.environ.get('SLACK_CHANNEL')
+    if not channel:
+        logger.error("SLACK_CHANNEL not found in environment variables")
+        return False
+    
+    user = os.environ.get('SLACK_USER')
+    if not user:
+        logger.error("SLACK_USER not found in environment variables")
+        return False
+
+
+
     try:
         # Send message to Slack
         result = client.chat_postMessage(
-            channel=request.channel,
-            text=request.message,
-            user=request.user
+            channel=channel,
+            text=message,
+            user=user
         )
         logger.info(f"Message sent successfully: {result}")
         return True
