@@ -36,7 +36,5 @@ class Blog(AbstractSharedTool):
             blog_dir = workspace_dir / "blog"
             blog_dir.mkdir(parents=True, exist_ok=True)
 
-        self._initialize_tools()
-
     def _get_tools(self):
         return [read_blog, write_to_blog]

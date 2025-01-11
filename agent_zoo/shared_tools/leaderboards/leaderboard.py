@@ -39,8 +39,6 @@ class CooperationBoard(AbstractSharedTool):
         with open(fpath, 'w') as f:
             f.write(','.join(attrs) + '\n')
 
-        self._initialize_tools()
-
     def _get_tools(self):
         return [load_coop_board]
 

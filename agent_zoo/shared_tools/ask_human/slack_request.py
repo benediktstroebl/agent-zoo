@@ -14,7 +14,7 @@ class SlackRequest(AbstractSharedTool):
     }
 
     def _init_tool(self, workspace_dir, agent_dirs):
-        self._initialize_tools()
+        pass 
 
     def _get_tools(self):
         return [send_slack_message]

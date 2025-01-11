@@ -25,7 +25,5 @@ class Mail(AbstractSharedTool):
             mail_dir = agent_dir / "mail"
             mail_dir.mkdir(parents=True, exist_ok=True)
 
-        self._initialize_tools()
-
     def _get_tools(self):
         return [check_mail, send_message]
