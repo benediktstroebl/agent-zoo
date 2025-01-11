@@ -4,14 +4,18 @@ import os
 import uuid
 from typing import List, Dict, Tuple
 from .agents.agent import Agent
+from .tasks.task import Task
 from .shared_tools.abstract_tool import AbstractSharedTool
 from .configs.workspace_config import WorkspaceConfig
+from .prompts.prompt import PromptRegistry
 
 class Workspace:
-    def __init__(self, agents: List[Agent], config: WorkspaceConfig, shared_tools: List[AbstractSharedTool] = None):
+    def __init__(self, agents: List[Agent], config: WorkspaceConfig, shared_tools: List[AbstractSharedTool] = None, tasks: List[Task] = None):
         self.agents = agents
         self.config = config
         self.shared_tools = shared_tools or []
+        self.tasks = tasks or []
+        self.prompt = PromptRegistry.get(self.config.prompt, self.tasks, self.agents, self.shared_tools)
         
         # Create unique workspace directory
         self.workspace_dir = config.base_dir / f"workspace_{uuid.uuid4().hex[:8]}"
@@ -80,6 +84,9 @@ class Workspace:
             mounts.append((str(dir_path.absolute()), mount_opts))
         
         return mounts
+    
+    def get_shared_tools(self) -> List[AbstractSharedTool]:
+        return self.shared_tools
 
     def get_agent_home(self, agent_name: str) -> Path:
         """Get the home directory for an agent inside the workspace and relative to the workspace root"""

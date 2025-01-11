@@ -30,7 +30,7 @@ class AbstractSharedTool:
         for tool in self._get_tools():
             self._register_tool(tool)
     
-    def _register_tool(func, command_name=None):
+    def _register_tool(self, tool, command_name=None):
         """
         Register a Python function as a terminal command.
 
@@ -38,14 +38,15 @@ class AbstractSharedTool:
             func (callable): The Python function to register as a command.
             command_name (str, optional): The name of the terminal command. Defaults to the function name.
         """
-        if not callable(func):
+        
+        if not callable(tool):
             raise ValueError("The argument must be a callable function.")
 
         # Use the function name as the command name if not provided
-        command_name = command_name or func.__name__
+        command_name = command_name or tool.__name__
 
         # Get the source code of the function
-        func_source = inspect.getsource(func)
+        func_source = inspect.getsource(tool)
 
         # Generate the CLI wrapper script
         script_content = f"""#!/usr/bin/env python3
@@ -54,11 +55,11 @@ class AbstractSharedTool:
     {func_source}
 
     def main():
-        parser = argparse.ArgumentParser(description='CLI wrapper for {func.__name__}')
+        parser = argparse.ArgumentParser(description='CLI wrapper for {tool.__name__}')
     """
 
         # Generate argument parsing based on the function signature
-        signature = inspect.signature(func)
+        signature = inspect.signature(tool)
         for param_name, param in signature.parameters.items():
             script_content += "    parser.add_argument(\"--{}\", type={}, required={})\n".format(
                 param_name,
@@ -69,7 +70,7 @@ class AbstractSharedTool:
         script_content += f"""
         args = parser.parse_args()
         kwargs = vars(args)
-        result = {func.__name__}(**kwargs)
+        result = {tool.__name__}(**kwargs)
         print(result if result is not None else '')
 
     if __name__ == "__main__":

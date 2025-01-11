@@ -42,10 +42,16 @@ class Agent:
         load_dotenv()
         local_env_vars = {key: value for key, value in os.environ.items() if os.path.exists('.env') and key in open('.env').read()}
         
+        # Get all env vars from the shared tools in the workspace
+        shared_tools = self.workspace.get_shared_tools()
+        shared_tool_env_vars = {key: value for tool in shared_tools for key, value in tool.environment_vars.items()}
+        
         container_env = {
                 **local_env_vars,
+                **shared_tool_env_vars,
                 "AGENT_NAME": self.name,
                 "AGENT_HOME": f"/home/agent_{self.name}",
+                "WORKSPACE_DIR": "/home",
                 "PYTHONUNBUFFERED": "1",
             }
         
@@ -71,6 +77,17 @@ class Agent:
                 detach=True,
                 name=f"agent_zoo_{self.name}_{uuid.uuid4()}"
             )
+        
+        # print env variables availabel in container 
+        result = container.exec_run(
+            cmd=["printenv"],
+            environment=container_env,
+            detach=False,
+            stream=True
+        )
+        for output_chunk in result.output:
+            line = output_chunk.decode()
+            self.container_logger.info(line.strip(), extra={'container_name': self.name})
 
         
         self.logger.info(f"Container for agent {self.name} started successfully")
@@ -83,7 +100,7 @@ class Agent:
             self.logger.error(f"Failed to start container for agent {self.name}: {e}")
             raise Exception(f"Failed to start container: {e} for agent {self.name}")
         
-    def run(self, tasks: List[Task]):
+    def run(self):
         try:
             self.logger.info(f"Initializing agent {self.name}")
             self.initialize()
@@ -92,8 +109,8 @@ class Agent:
                 cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"],
                 environment={
                     "AGENT_NAME": self.name,
-                    **{name: var for task in tasks for name, var in task.environment_vars.items()},
-                    **{f"TASK_PROMPT_{task.name}": task.prompt for task in tasks}
+                    "TASK_PROMPT": self.workspace.prompt,
+                    **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
                 },
                 detach=False,
                 stream=True

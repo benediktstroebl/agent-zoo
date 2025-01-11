@@ -5,7 +5,7 @@ class BasicTask(Task):
         super().__init__(
             name="basic_task",
             evaluation_function=self.evaluate,
-            prompt="What is the capital of France?",
+            prompt="Check your mail",
             environment_vars={}
         )
     

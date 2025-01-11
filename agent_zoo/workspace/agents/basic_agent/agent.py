@@ -12,13 +12,33 @@ load_dotenv()
 
 model = LiteLLMModel(model_id="gpt-4o")
 
-<<<<<<< HEAD:agent-zoo/workspace/agents/basic_agent/agent.py
-import os
 
-os.chdir(Path(__file__).resolve().parent)
+@tool
+def check_mail(last_n_days: int) -> str:
+    """
+    Check mail for the agent.
+    Args:
+        last_n_days: The number of days to check mail for
+    """
+    try:
+        result = subprocess.run(f"check_mail --last_n_days {last_n_days}", shell=True, capture_output=True, text=True)
+        return f"{result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(e)}"
 
-=======
->>>>>>> 0990bd85c99576b0500c9aab703c84582e9e767c:agent_zoo/workspace/agents/basic_agent/agent.py
+@tool
+def write_mail(message: str, recipient_name: str) -> str:
+    """
+    Write a mail to another agent.
+    Args:
+        message: The message to send
+        recipient_name: The name of the agent to send the mail to
+    """
+    try:
+        result = subprocess.run(f"write_mail --message '{message}' --recipient_name {recipient_name}", shell=True, capture_output=True, text=True)
+        return f"Mail sent to {recipient_name}"
+    except Exception as e:
+        return f"Error executing command: {str(e)}"
 
 @tool
 def execute_bash(command: str) -> str:
@@ -371,19 +391,19 @@ def analyze_code(command: str, path: str) -> str:
         return f"Error during code analysis: {str(e)}"
 
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code], model=model, max_steps=10)
+agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, write_mail], model=model, max_steps=10)
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
 if __name__ == "__main__":
     import os
     import json
-    task_prompt = os.getenv("TASK_PROMPT_basic_task")
+    task_prompt = os.getenv("TASK_PROMPT")
     agent.run(task_prompt)
     
     # write agent.logs to json file in /workspace/agents/logs/basic_agent.json
     os.makedirs('/home/logs', exist_ok=True)
     with open('/home/logs/basic_agent.json', 'w') as f:
-        json.dump(str(agent.logs), f)
+        json.dump(agent.to_json(), f)
 
 

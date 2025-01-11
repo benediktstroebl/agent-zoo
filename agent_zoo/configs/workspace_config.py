@@ -8,11 +8,11 @@ class DirectoryConfig:
     name: str
     permissions: str
     other_agents: Optional[str] = None  # Permissions for other agents accessing this directory
-    file_pattern: Optional[str] = None
 
 @define
 class WorkspaceConfig:
     base_dir: Path = field(default=Path("workspaces"))
+    prompt: str = field(default="default")
     agent_directories: List[DirectoryConfig] = field(factory=list)
     shared_directories: List[DirectoryConfig] = field(factory=list)
     

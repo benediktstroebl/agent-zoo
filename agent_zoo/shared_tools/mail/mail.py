@@ -1,13 +1,9 @@
 from attrs import define, field, asdict
-import os
 from pathlib import Path
-import sys
 
-sys.path.append(str(Path(__file__).parent))
-
-from abstract_tool import AbstractSharedTool
-from check_mail import check_mail
-from send_message import send_message
+from ..abstract_tool import AbstractSharedTool
+from .check_mail import check_mail
+from .send_message import send_message
 
 @define 
 class Mail(AbstractSharedTool):

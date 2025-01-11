@@ -11,7 +11,14 @@ from write_to_blog import write_to_blog
 
 @define 
 class Blog(AbstractSharedTool):
+    communal_blog: bool = field(default=False)
     tools = []
+
+    environment_vars = {
+        'BLOG_FORMAT': 'communal' if communal_blog else 'agent',
+        'BLOG_FNAME': 'blog.csv'
+    }
+
     def __sub_init__(self):
         pass
 
@@ -21,8 +28,12 @@ class Blog(AbstractSharedTool):
         - initializes 
         """
         # make the directory
-        for agent_dir in agent_dirs.values():
-            blog_dir = agent_dir / "blog"
+        if self.communal_blog:
+            for agent_dir in agent_dirs.values():
+                blog_dir = agent_dir / "blog"
+                blog_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            blog_dir = workspace_dir / "blog"
             blog_dir.mkdir(parents=True, exist_ok=True)
 
         self._initialize_tools()

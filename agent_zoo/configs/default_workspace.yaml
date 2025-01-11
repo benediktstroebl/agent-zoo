@@ -1,4 +1,5 @@
 base_dir: "workspaces"
+prompt: "default"
 
 # Agent-specific directory structure
 agent_directories:
@@ -6,28 +7,14 @@ agent_directories:
     permissions: "rw"      # Own agent code
     other_agents: "ro"      # Other agents can read code
 
-  - name: "agent_copies"
-    permissions: "rw"      # Full access to own sandbox
-    other_agents: "ro"      # Other agents can read sandbox results
-
-  - name: "mail"
-    permissions: "rw"      # Full access to own mail
-    other_agents: "rw"     # Other agents need write access for communication
-
-  - name: "blog"
-    permissions: "rw"      # Full access to own blog
-    other_agents: "ro"      # Other agents can read blogs
-
 # Shared resources at workspace root
 shared_directories:
-
   - name: "tasks"
     permissions: "ro"
-    file_pattern: "task_*.py"
 
   - name: "tools"
     permissions: "ro" 
 
 tools:
   - name: "task_runner"
-  
+

@@ -5,3 +5,6 @@ WORKDIR /home
 # Install dependencies
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+
+# add .local/bin to PATH
+ENV PATH="~/.local/bin:$PATH"
