@@ -68,7 +68,7 @@ import argparse
 {func_source}
 
 def main():
-    parser = argparse.ArgumentParser(description='CLI wrapper for {tool.__name__}')
+    parser = argparse.ArgumentParser(description="CLI wrapper for {tool.__name__}")
 """
 
         # Generate argument parsing based on the function signature
@@ -81,13 +81,13 @@ def main():
             )
 
         script_content += f"""
-        args = parser.parse_args()
-        kwargs = vars(args)
-        result = {tool.__name__}(**kwargs)
-        print(result if result is not None else '')
+    args = parser.parse_args()
+    kwargs = vars(args)
+    result = {tool.__name__}(**kwargs)
+    print(result if result is not None else "")
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
     """
 
         return script_content

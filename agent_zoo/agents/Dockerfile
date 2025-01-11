@@ -4,7 +4,9 @@ WORKDIR /home
 
 # Install dependencies
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt \
+    && mkdir -p /root/.local/bin \
+    && chmod -R 777 /root/.local/bin
 
 # add .local/bin to PATH
-ENV PATH="~/.local/bin:$PATH"
+ENV PATH="/root/.local/bin:$PATH"

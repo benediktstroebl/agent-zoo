@@ -19,7 +19,7 @@ class Workspace:
         
         # Create unique workspace directory
         self.workspace_dir = config.base_dir / f"workspace_{uuid.uuid4().hex[:8]}"
-        self.agent_dirs = {agent.name: self.workspace_dir / f"agent_{agent.name}" for agent in agents}
+        self.agent_dirs = {agent.name: self.workspace_dir / f"{agent.name}" for agent in agents}
 
     def setup_workspace(self):
         """Setup the workspace directory structure for all agents"""
@@ -58,7 +58,7 @@ class Workspace:
         agent_dir = self.agent_dirs[agent_name]
         for dir_config in self.config.agent_directories:
             dir_path = agent_dir / dir_config.name
-            mount_opts = {'bind': f'/home/agent_{agent_name}/{dir_config.name}'}
+            mount_opts = {'bind': f'/home/{agent_name}/{dir_config.name}'}
             if dir_config.permissions != "rw":  # Only set mode if not full access
                 mount_opts['mode'] = dir_config.permissions
             mounts.append((str(dir_path.absolute()), mount_opts))
@@ -70,10 +70,11 @@ class Workspace:
                 for dir_config in self.config.agent_directories:
                     if dir_config.other_agents:  # Only mount if other_agents permission is specified
                         dir_path = other_agent_dir / dir_config.name
-                        mount_opts = {'bind': f'/home/agent_{other_agent.name}/{dir_config.name}'}
+                        mount_opts = {'bind': f'/home/{other_agent.name}/{dir_config.name}'}
                         if dir_config.other_agents != "rw":  # Only set mode if not full access
                             mount_opts['mode'] = dir_config.other_agents
                         mounts.append((str(dir_path.absolute()), mount_opts))
+                        
         
         # Mount shared directories with configured permissions
         for dir_config in self.config.shared_directories:
@@ -82,6 +83,14 @@ class Workspace:
             if dir_config.permissions != "rw":  # Only set mode if not full access
                 mount_opts['mode'] = dir_config.permissions
             mounts.append((str(dir_path.absolute()), mount_opts))
+            
+            
+        # For all directories in initialized workspace, mount them to /home/agent_name/dir_name
+        for name, agent_dir in self.agent_dirs.items():
+            for dir_path in agent_dir.iterdir():
+                if dir_path.is_dir():
+                    mount_opts = {'bind': f'/home/{name}/{dir_path.name}'}
+                    mounts.append((str(dir_path.absolute()), mount_opts))
         
         return mounts
     
@@ -90,5 +99,5 @@ class Workspace:
 
     def get_agent_home(self, agent_name: str) -> Path:
         """Get the home directory for an agent inside the workspace and relative to the workspace root"""
-        return Path(f"/home/agent_{agent_name}/agent")
+        return Path(f"/home/{agent_name}/agent")
 

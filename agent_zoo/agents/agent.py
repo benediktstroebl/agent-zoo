@@ -50,7 +50,7 @@ class Agent:
                 **local_env_vars,
                 **shared_tool_env_vars,
                 "AGENT_NAME": self.name,
-                "AGENT_HOME": f"/home/agent_{self.name}",
+                "AGENT_HOME": f"/home/{self.name}",
                 "WORKSPACE_DIR": "/home",
                 "PYTHONUNBUFFERED": "1",
             }
@@ -68,6 +68,8 @@ class Agent:
         volumes = {}
         for source, mount_opts in self.workspace.get_mount_options(self.name):
             volumes[source] = mount_opts
+            
+        print(volumes)
         
         container = docker_client.containers.run(
                 f"agent_zoo_{self.name}:latest",
@@ -85,10 +87,45 @@ class Agent:
             detach=False,
             stream=True
         )
+        
+        
         for output_chunk in result.output:
             line = output_chunk.decode()
             self.container_logger.info(line.strip(), extra={'container_name': self.name})
-
+        
+        # create .local/bin if it doesn't exist in docker container
+        result = container.exec_run(
+            cmd=["sh", "-c", "mkdir -p ~/.local/bin"],
+            environment=container_env,
+            detach=False,
+            stream=True
+        )
+        
+        for output_chunk in result.output:
+            line = output_chunk.decode()
+            self.container_logger.info(line.strip(), extra={'container_name': self.name})
+        
+        for tool in self.workspace.get_shared_tools():
+            scripts = tool.get_tool_scripts()
+            
+            for tool_name, script in scripts.items():
+                # store script in local bin in docker container
+                result = container.exec_run(
+                    cmd=["sh", "-c", f"echo '{script}' > ~/.local/bin/{tool_name}"],
+                    environment=container_env,
+                    detach=False,
+                    stream=True
+                )
+                    
+        # Give full permission to all files in .local/bin
+        result = container.exec_run(
+            cmd=["sh", "-c", f"chmod -R 777 ~/.local/bin"],
+            environment=container_env,
+            detach=False,
+            stream=True
+        )
+            
+            
         
         self.logger.info(f"Container for agent {self.name} started successfully")
         return container
@@ -105,10 +142,24 @@ class Agent:
             self.logger.info(f"Initializing agent {self.name}")
             self.initialize()
             
+            # test write_mail tool
+            # result = self.container.exec_run(
+            #     cmd=["send_message --msg 'Hello' --recipient_name 'basic_agent_2'"],
+            #     environment={
+            #         "AGENT_NAME": self.name,
+            #         "WORKSPACE_DIR": "/home",
+            #         "TASK_PROMPT": self.workspace.prompt,
+            #         **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
+            #     },
+            #     detach=False,
+            #     stream=True
+            # )
+            
             result = self.container.exec_run(
                 cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"],
                 environment={
                     "AGENT_NAME": self.name,
+                    "WORKSPACE_DIR": "/home",
                     "TASK_PROMPT": self.workspace.prompt,
                     **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
                 },
@@ -137,6 +188,7 @@ class Agent:
         except Exception as e:
             self.logger.error(f"Agent {self.name} failed with error: {e}")
             if hasattr(self, 'container'):
-                self.container.stop()
-                self.container.remove()
+                # self.container.stop()
+                # self.container.remove()
+                pass
             raise Exception(f"Agent {self.name} failed with error: {e}")

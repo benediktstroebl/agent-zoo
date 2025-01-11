@@ -27,15 +27,16 @@ def check_mail(last_n_days: int) -> str:
         return f"Error executing command: {str(e)}"
 
 @tool
-def write_mail(message: str, recipient_name: str) -> str:
+def send_message(msg: str, recipient_name: str) -> str:
     """
-    Write a mail to another agent.
+    Send a message to another agent.
     Args:
-        message: The message to send
+        msg: The message to send
         recipient_name: The name of the agent to send the mail to
     """
     try:
-        result = subprocess.run(f"write_mail --message '{message}' --recipient_name {recipient_name}", shell=True, capture_output=True, text=True)
+        print(msg, recipient_name)
+        result = subprocess.run(f"send_message --msg '{msg}' --recipient_name '{recipient_name}'", shell=True, capture_output=True, text=True)
         return f"Mail sent to {recipient_name}"
     except Exception as e:
         return f"Error executing command: {str(e)}"
@@ -391,7 +392,7 @@ def analyze_code(command: str, path: str) -> str:
         return f"Error during code analysis: {str(e)}"
 
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, write_mail], model=model, max_steps=10, remove_final_answer_tool=True)
+agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message], model=model, max_steps=10, remove_final_answer_tool=True)
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
