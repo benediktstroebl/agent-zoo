@@ -7,7 +7,10 @@ from .send_message import send_message
 
 @define 
 class Mail(AbstractSharedTool):
-    environment_vars: dict = {'MAIL_DIRECTORY': 'mail'}
+    def __init__(self):
+        super().__init__()
+        self.environment_vars = {'MAIL_DIRECTORY': 'mail'}
+        self.__sub_init__()
 
     def __sub_init__(self):
         pass

@@ -5,6 +5,13 @@ import sys
 
 
 class AbstractSharedTool:
+    def __init__(self):
+        self.name = ""
+        self.description = ""
+        self.inputs = {}
+        self.output_type = ""
+        self.environment_vars = {}
+        
     # take this from smolagents 
     name: str
     description: str
@@ -50,13 +57,13 @@ class AbstractSharedTool:
 
         # Generate the CLI wrapper script
         script_content = f"""#!/usr/bin/env python3
-    import argparse
+import argparse
 
-    {func_source}
+{func_source}
 
-    def main():
-        parser = argparse.ArgumentParser(description='CLI wrapper for {tool.__name__}')
-    """
+def main():
+    parser = argparse.ArgumentParser(description='CLI wrapper for {tool.__name__}')
+"""
 
         # Generate argument parsing based on the function signature
         signature = inspect.signature(tool)
