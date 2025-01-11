@@ -22,8 +22,10 @@ class Mail(AbstractSharedTool):
         """
         # make the directory
         for agent_dir in agent_dirs.values():
-            mail_dir = agent_dir / "mail"
+            mail_dir = agent_dir / self.environment_vars['MAIL_DIRECTORY']
             mail_dir.mkdir(parents=True, exist_ok=True)
+            with open(mail_dir / 'mail.txt', 'w') as f:
+                f.write('')
 
     def _get_tools(self):
         return [check_mail, send_message]
