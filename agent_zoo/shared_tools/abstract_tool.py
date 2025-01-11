@@ -85,7 +85,7 @@ def main():
     """
 
         # Define the target directory for the script - using /usr/local/bin which is typically in PATH
-        target_dir = "/home/local/bin"
+        target_dir = "~/.local/bin"
         os.makedirs(target_dir, exist_ok=True)
 
         # Define the script file path
