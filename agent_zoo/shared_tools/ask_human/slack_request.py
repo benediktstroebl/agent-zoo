@@ -1,6 +1,8 @@
 from ..abstract_tool import AbstractSharedTool
 import os
 
+from .send_request import send_slack_message
+
 class SlackRequest(AbstractSharedTool):
     name: str = 'human_request'
     environment_vars = {
@@ -12,4 +14,7 @@ class SlackRequest(AbstractSharedTool):
     }
 
     def _init_tool(self, workspace_dir, agent_dirs):
-        pass
+        self._initialize_tools()
+
+    def _get_tools(self):
+        return [send_slack_message]

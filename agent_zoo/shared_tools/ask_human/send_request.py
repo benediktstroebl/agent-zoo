@@ -6,11 +6,6 @@ from slack_sdk.errors import SlackApiError
 
 logger = logging.getLogger(__name__)
 
-class SlackRequest(BaseModel):
-    message: str
-    channel: str
-    user: str
-
 def send_slack_message(message: str) -> bool:
     """
     Send a request to a human via Slack.
