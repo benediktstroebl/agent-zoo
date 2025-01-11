@@ -1,9 +1,8 @@
-import os 
-
 def read_blog(agent_name):
     """
     Read the blog of an agent. 
     """
+    import os 
     ROOT_DIR = os.environ['AGENT_ZOO_ROOT']
     agent_path = os.path.join(ROOT_DIR, agent_name)
     blog_name = os.environ['BLOG_FNAME']

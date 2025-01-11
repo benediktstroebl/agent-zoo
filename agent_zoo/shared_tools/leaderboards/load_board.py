@@ -1,9 +1,8 @@
-import os 
-
 def load_coop_board():
     """
     loads the leaderboard
     """
+    import os 
     cooperation_board_path = os.getenv('COOPERATION_BOARD_PATH')
 
     with open(cooperation_board_path, 'r') as f:
