@@ -80,6 +80,9 @@ class Workspace:
             mounts.append((str(dir_path.absolute()), mount_opts))
         
         return mounts
+    
+    def get_shared_tools(self) -> List[AbstractSharedTool]:
+        return self.shared_tools
 
     def get_agent_home(self, agent_name: str) -> Path:
         """Get the home directory for an agent inside the workspace and relative to the workspace root"""

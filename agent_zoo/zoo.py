@@ -25,7 +25,7 @@ class AgentZoo:
         self.permissions_config = permissions_config
         self.workspace_config = WorkspaceConfig.from_yaml(workspace_config_path)
         self.agents = Agent.get_agents(self.agents)
-        self.shared_tools = [AbstractSharedTool(tool) for tool in self.shared_tools]
+        self.shared_tools = shared_tools
         self.workspace = Workspace(self.agents, self.workspace_config, self.shared_tools)
         
         self.logger.info("AgentZoo initialized with %d agents, %d tools, and %d tasks", 

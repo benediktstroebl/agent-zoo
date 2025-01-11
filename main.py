@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from agent_zoo.shared_tools.mail.mail import Mail
+
+
 
 def main():
     zoo = AgentZoo(
@@ -13,7 +16,7 @@ def main():
         tasks=['basic_task'],
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
-        shared_tools=[],
+        shared_tools=[Mail()],
         workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml')
     )
     zoo.run()
