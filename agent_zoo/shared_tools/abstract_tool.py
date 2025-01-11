@@ -37,7 +37,7 @@ class AbstractSharedTool:
         for tool in self._get_tools():
             self._register_tool(tool)
     
-    def register_tool(self, tool, command_name=None):
+    def get_tool_script(self, tool, command_name=None):
         """
         Register a Python function as a terminal command.
 
