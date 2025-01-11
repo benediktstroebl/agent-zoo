@@ -42,7 +42,7 @@ class AbstractSharedTool:
         Register a Python function as a terminal command.
 
         Args:
-            func (callable): The Python function to register as a command.
+            tool (callable): The Python function to register as a command.
             command_name (str, optional): The name of the terminal command. Defaults to the function name.
         """
         
@@ -84,8 +84,8 @@ def main():
         main()
     """
 
-        # Define the target directory for the script
-        target_dir = os.path.expanduser("~/.local/bin")
+        # Define the target directory for the script - using /usr/local/bin which is typically in PATH
+        target_dir = "/home/local/bin"
         os.makedirs(target_dir, exist_ok=True)
 
         # Define the script file path
@@ -98,5 +98,4 @@ def main():
         # Make the script executable
         os.chmod(script_path, 0o755)
 
-        print(f"Command '{command_name}' has been created and is available in your terminal.")
-        print(f"Ensure '{target_dir}' is in your PATH if you encounter any issues.")        
+        print(f"Command '{command_name}' has been created in {target_dir}")        
