@@ -33,11 +33,17 @@ class AbstractSharedTool:
         # a function to return all the tools we should register
         pass 
 
-    def _initialize_tools(self):
-        for tool in self._get_tools():
-            self._register_tool(tool)
+    def get_tool_scripts(self):
+        # return a list of dicts
+        # key is the tool name, value is the script
+        tools = self._get_tools()
+        tool_scripts = {}
+        for tool in tools:
+            tool_scripts[tool.__name__] = self._get_tool_script(tool)
+        return tool_scripts
+
     
-    def get_tool_script(self, tool, command_name=None):
+    def _get_tool_script(self, tool, command_name=None):
         """
         Register a Python function as a terminal command.
 
