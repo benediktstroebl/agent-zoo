@@ -14,8 +14,8 @@ def send_message(recipient_name, msg):
     """
     sender_name = os.getenv('AGENT_NAME')
     workspace_dir = os.getenv('WORKSPACE_DIR')
-    mail_dir = os.getenv('MAIL_DIR')
-    mail_path = os.path.join(workspace_dir, mail_dir, 'mail')
+    mail_dir = os.getenv('MAIL_DIRECTORY')
+    mail_path = os.path.join(workspace_dir, recipient_name, mail_dir, 'mail')
     with open(mail_path, 'a') as f:
         msg_template = msg_template.format(sender_name=sender_name, msg=msg)
         f.write(msg_template)
