@@ -37,7 +37,7 @@ class AbstractSharedTool:
         for tool in self._get_tools():
             self._register_tool(tool)
     
-    def _register_tool(self, tool, command_name=None):
+    def register_tool(self, tool, command_name=None):
         """
         Register a Python function as a terminal command.
 
@@ -84,18 +84,4 @@ def main():
         main()
     """
 
-        # Define the target directory for the script - using /usr/local/bin which is typically in PATH
-        target_dir = "~/.local/bin"
-        os.makedirs(target_dir, exist_ok=True)
-
-        # Define the script file path
-        script_path = os.path.join(target_dir, command_name)
-
-        # Write the script to the file
-        with open(script_path, "w") as f:
-            f.write(script_content)
-
-        # Make the script executable
-        os.chmod(script_path, 0o755)
-
-        print(f"Command '{command_name}' has been created in {target_dir}")        
+        return script_content
