@@ -46,11 +46,3 @@ def send_slack_message(message: str) -> bool:
     except SlackApiError as e:
         logger.error(f"Error posting message: {e}")
         return False
-    
-    # add a listening tool to listen for a response
-
-    try:
-        response = client.chat_listen()
-    except SlackApiError as e:
-        logger.error(f"Error listening for response: {e}")
-        return False
