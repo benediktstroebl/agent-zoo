@@ -1,6 +1,8 @@
-from typing import Callable, Dict, List, Type
+from typing import Callable, Dict, List, Type, Any
 from abc import ABC, abstractmethod
 import logging
+
+
 class Task(ABC):
     _object_registry: Dict[str, 'Task'] = {}
     
@@ -19,4 +21,8 @@ class Task(ABC):
     @classmethod
     def get_tasks(cls, task_names: List[str]) -> Dict[str, 'Task']:
         return [cls._object_registry[name] for name in task_names]
+    
+    @abstractmethod
+    def evaluate(self) -> Any:
+        pass
 
