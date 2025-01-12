@@ -27,7 +27,8 @@ def main():
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         shared_tools=[Blog(), Mail(), Slack(), Wait()],
-        workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml')
+        workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml'),
+        max_runtime_minutes=0.1
     )
     zoo.run()
 

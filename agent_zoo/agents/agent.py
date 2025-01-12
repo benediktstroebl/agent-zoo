@@ -173,7 +173,16 @@ class Agent:
         except Exception as e:
             self.logger.error(f"Agent {self.name} failed with error: {e}")
             if hasattr(self, 'container'):
-                self.container.stop()
-                self.container.remove()
+                self.stop()
                 
             raise Exception(f"Agent {self.name} failed with error: {e}")
+
+    def stop(self):
+        """Stop the agent and its container"""
+        try:
+            if hasattr(self, 'container'):
+                self.container.stop()
+                self.container.remove()
+                self.logger.info(f"Container for agent {self.name} stopped and removed")
+        except Exception as e:
+            self.logger.error(f"Error stopping agent {self.name}: {e}")
