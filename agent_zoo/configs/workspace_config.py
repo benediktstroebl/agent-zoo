@@ -27,6 +27,7 @@ class WorkspaceConfig:
             
         return cls(
             base_dir=Path(config['base_dir']),
+            prompt=config['prompt'],
             agent_directories=[
                 DirectoryConfig(**dir_config)
                 for dir_config in config['agent_directories']

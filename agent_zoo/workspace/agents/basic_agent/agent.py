@@ -42,15 +42,13 @@ def read_blog(agent_name: str) -> str:
 
 
 @tool
-def check_mail(last_n_days: int) -> str:
+def check_mail() -> str:
     """
     Check mail for the agent.
     Make sure to check your mail frequently. 
-    Args:
-        last_n_days: The number of days to check mail for
     """
     try:
-        result = subprocess.run(f"check_mail --last_n_days {last_n_days}", shell=True, capture_output=True, text=True)
+        result = subprocess.run(f"check_mail", shell=True, capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
         return f"Error executing command: {e}"

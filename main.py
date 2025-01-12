@@ -23,7 +23,7 @@ def main():
     
     zoo = AgentZoo(
         name="humor_2_agents_20_minutes_4o",
-        agents=["monkey", "zebra"],
+        agents=["monkey", "giraffe"],
         tasks=['generate_jokes'],
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
