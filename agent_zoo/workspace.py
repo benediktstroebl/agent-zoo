@@ -1,7 +1,7 @@
 from pathlib import Path
 import shutil
 import os
-import uuid
+from datetime import datetime
 from typing import List, Dict, Tuple
 from .agents.agent import Agent
 from .tasks.task import Task
@@ -17,7 +17,7 @@ class Workspace:
         self.tasks = tasks or []
                 
         # Create unique workspace directory
-        self.workspace_dir = config.base_dir / f"workspace_{uuid.uuid4().hex[:8]}"
+        self.workspace_dir = config.base_dir / f"workspace_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         self.agent_dirs = {agent.name: self.workspace_dir / f"{agent.name}" for agent in agents}
 
     def setup_workspace(self):
