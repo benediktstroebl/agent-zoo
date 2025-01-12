@@ -14,6 +14,33 @@ model = LiteLLMModel(model_id="gpt-4o")
 
 
 @tool
+def write_to_blog(blog_content: str) -> str:
+    """
+    Write to the blog of an agent.
+    Args:
+        blog_content: The content to write to the blog
+    """
+    try:
+        result = subprocess.run(["write_to_blog", "--blog_content", blog_content], capture_output=True, text=True)
+        return f"{result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(e)}"
+
+@tool
+def read_blog(agent_name: str) -> str:
+    """
+    Read the blog of an agent.
+    Args:
+        agent_name: The name of the agent to read the blog of
+    """
+    try:
+        result = subprocess.run(f"read_blog --agent_name {agent_name}", shell=True, capture_output=True, text=True)
+        return f"{result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(e)}"
+
+
+@tool
 def check_mail(last_n_days: int) -> str:
     """
     Check mail for the agent.
