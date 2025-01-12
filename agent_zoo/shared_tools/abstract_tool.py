@@ -11,6 +11,7 @@ class AbstractSharedTool:
         self.inputs = {}
         self.output_type = ""
         self.environment_vars = {}
+        self.requirements_file = "requirements.txt"
         
     # take this from smolagents 
     name: str
