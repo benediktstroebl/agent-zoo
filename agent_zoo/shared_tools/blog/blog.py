@@ -1,17 +1,15 @@
 from attrs import define, field, asdict
 import os
 from pathlib import Path
-import sys
+import sys  
 
-sys.path.append(str(Path(__file__).parent))
-
-from abstract_tool import AbstractSharedTool
-from read_blog import read_blog
-from write_to_blog import write_to_blog
+from ..abstract_tool import AbstractSharedTool
+from .read_blog import read_blog
+from .write_to_blog import write_to_blog
 
 @define 
 class Blog(AbstractSharedTool):
-    communal_blog: bool = field(default=False)
+    communal_blog: bool = field(default=True)
     tools = []
 
     environment_vars = {
@@ -28,13 +26,17 @@ class Blog(AbstractSharedTool):
         - initializes 
         """
         # make the directory
-        if self.communal_blog:
+        if not self.communal_blog:
             for agent_dir in agent_dirs.values():
                 blog_dir = agent_dir / "blog"
                 blog_dir.mkdir(parents=True, exist_ok=True)
+                with open(blog_dir / self.environment_vars["BLOG_FNAME"], "w") as f:
+                    f.write("")
         else:
             blog_dir = workspace_dir / "blog"
             blog_dir.mkdir(parents=True, exist_ok=True)
+            with open(blog_dir / self.environment_vars["BLOG_FNAME"], "w") as f:
+                f.write("")
 
     def _get_tools(self):
         return [read_blog, write_to_blog]
