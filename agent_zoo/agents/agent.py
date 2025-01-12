@@ -105,9 +105,7 @@ class Agent:
         
         for tool in self.workspace.get_shared_tools():
             scripts = tool.get_tool_scripts()
-            
-            print(scripts)
-            
+                        
             for tool_name, script in scripts.items():
                 # store script in local bin in docker container
                 result = container.exec_run(
@@ -160,7 +158,7 @@ class Agent:
                 environment={
                     "AGENT_NAME": self.name,
                     "WORKSPACE_DIR": "/home",
-                    "TASK_PROMPT": self.workspace.prompt,
+                    "TASK_PROMPT": self.workspace.get_prompt(self.name),
                     **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
                 },
                 detach=False,
@@ -188,7 +186,7 @@ class Agent:
         except Exception as e:
             self.logger.error(f"Agent {self.name} failed with error: {e}")
             if hasattr(self, 'container'):
-                # self.container.stop()
-                # self.container.remove()
-                pass
+                self.container.stop()
+                self.container.remove()
+                
             raise Exception(f"Agent {self.name} failed with error: {e}")

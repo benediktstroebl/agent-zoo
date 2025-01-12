@@ -21,7 +21,7 @@ def main():
     print_ascii_art()
     
     zoo = AgentZoo(
-        agents=["basic_agent"],
+        agents=["basic_agent", "basic_agent_2"],
         tasks=['basic_task'],
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),

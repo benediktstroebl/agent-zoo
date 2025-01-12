@@ -15,8 +15,7 @@ class Workspace:
         self.config = config
         self.shared_tools = shared_tools or []
         self.tasks = tasks or []
-        self.prompt = PromptRegistry.get(self.config.prompt, self.tasks, self.agents, self.shared_tools)
-        
+                
         # Create unique workspace directory
         self.workspace_dir = config.base_dir / f"workspace_{uuid.uuid4().hex[:8]}"
         self.agent_dirs = {agent.name: self.workspace_dir / f"{agent.name}" for agent in agents}
@@ -100,4 +99,8 @@ class Workspace:
     def get_agent_home(self, agent_name: str) -> Path:
         """Get the home directory for an agent inside the workspace and relative to the workspace root"""
         return Path(f"/home/{agent_name}/agent")
+    
+    def get_prompt(self, agent_name: str):
+        return PromptRegistry.get(self.config.prompt, self.tasks, self.agents, self.shared_tools, agent_name)
+
 
