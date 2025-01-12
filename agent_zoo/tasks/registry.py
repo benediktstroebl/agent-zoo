@@ -1,6 +1,7 @@
 from .task import Task
 
 class BasicTask(Task):
+
     def __init__(self):
         super().__init__(
             name="basic_task",
