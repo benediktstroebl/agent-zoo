@@ -47,9 +47,12 @@ class Agent:
         shared_tools = self.workspace.get_shared_tools()
         shared_tool_env_vars = {key: value for tool in shared_tools for key, value in tool.environment_vars.items()}
         
-        container_env = self.environment_variables | {
+        self.container_env = self.environment_variables | {
                 **local_env_vars,
                 **shared_tool_env_vars,
+                **self.environment_variables,
+                "TASK_PROMPT": self.workspace.get_prompt(self.name),
+                **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
                 "AGENT_NAME": self.name,
                 "AGENT_HOME": f"/home/{self.name}",
                 "WORKSPACE_DIR": "/home",
@@ -74,7 +77,7 @@ class Agent:
                 f"agent_zoo_{self.name}:latest",
                 command="tail -f /dev/null",
                 volumes=volumes,
-                environment=container_env,
+                environment=self.container_env,
                 detach=True,
                 name=f"agent_zoo_{self.name}_{uuid.uuid4()}"
             )
@@ -82,7 +85,7 @@ class Agent:
         # print env variables availabel in container 
         result = container.exec_run(
             cmd=["printenv"],
-            environment=container_env,
+            environment=self.container_env,
             detach=False,
             stream=True
         )
@@ -95,7 +98,7 @@ class Agent:
         # create .local/bin if it doesn't exist in docker container
         result = container.exec_run(
             cmd=["sh", "-c", "mkdir -p ~/.local/bin"],
-            environment=container_env,
+            environment=self.container_env,
             detach=False,
             stream=True
         )
@@ -111,7 +114,7 @@ class Agent:
                 # store script in local bin in docker container
                 result = container.exec_run(
                     cmd=["sh", "-c", f"echo '{script}' > ~/.local/bin/{tool_name}"],
-                    environment=container_env,
+                    environment=self.container_env,
                     detach=False,
                     stream=True
                 )
@@ -119,13 +122,11 @@ class Agent:
         # Give full permission to all files in .local/bin
         result = container.exec_run(
             cmd=["sh", "-c", f"chmod -R 777 ~/.local/bin"],
-            environment=container_env,
+            environment=self.container_env,
             detach=False,
             stream=True
         )
             
-            
-        
         self.logger.info(f"Container for agent {self.name} started successfully")
         return container
     
@@ -143,12 +144,7 @@ class Agent:
             
             result = self.container.exec_run(
                 cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"],
-                environment={
-                    "AGENT_NAME": self.name,
-                    "WORKSPACE_DIR": "/home",
-                    "TASK_PROMPT": self.workspace.get_prompt(self.name),
-                    **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
-                },
+                environment=self.container_env,
                 detach=False,
                 stream=True
             )

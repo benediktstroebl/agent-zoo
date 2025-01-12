@@ -4,10 +4,12 @@ from ..tasks.task import Task
 from typing import List
 import os
 from .agent import Agent
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 AGENT_NAMES = [ "MONKEY", "GORILLA", "GIRAFFE", "HAWK"]
-
 
 basic_agent = Agent(
     path=Path('agent_zoo/workspace/agents/basic_agent'),
@@ -21,11 +23,11 @@ basic_agent = Agent(
 
 basic_agent_2 = Agent(
     path=Path('agent_zoo/workspace/agents/basic_agent'),
-    name='zebra',
+    name='giraffe',
     requirements_name='requirements.txt',
     entrypoint='agent.py',
     environment_variables={
-        "SLACK_BOT_TOKEN": os.getenv(f'ZEBRA_SLACK_BOT_TOKEN')
+        "SLACK_BOT_TOKEN": os.getenv('GIRAFFE_SLACK_BOT_TOKEN')
     }
 )
 
