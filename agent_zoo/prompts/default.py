@@ -43,5 +43,14 @@ class DefaultPrompt(Prompt):
             agents=format_agents(self.agents, agent_name),
             tasks=format_tasks(self.tasks)
         )
+        
+class HumorPrompt(Prompt):
+    def get(self, agent_name: str) -> str:
+        return HUMOR_PROMPT.format(
+            agent_name=agent_name,
+            agents=format_agents(self.agents, agent_name),
+            tasks=format_tasks(self.tasks)
+        )
 
 PromptRegistry.register("default", DefaultPrompt) 
+PromptRegistry.register("humor", HumorPrompt) 
