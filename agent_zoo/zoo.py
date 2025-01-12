@@ -18,7 +18,8 @@ class AgentZoo:
                  compute_config: Union[DockerComputeConfig,List[DockerComputeConfig]], 
                  permissions_config: PermissionsConfig,
                  workspace_config_path: Path = None,
-                 max_runtime_minutes: Optional[int] = None):
+                 max_runtime_minutes: Optional[int] = None,
+                 name: str = None):
         self.logger, self.get_container_handler = setup_logging()
         self.agents = agents
         self.shared_tools = shared_tools
@@ -30,7 +31,7 @@ class AgentZoo:
         self.shared_tools = shared_tools
         self.workspace = Workspace(self.agents, self.workspace_config, self.shared_tools, self.tasks)
         self.max_runtime = max_runtime_minutes * 60 if max_runtime_minutes else None
-        
+        self.name = name
         self.logger.info("AgentZoo initialized with %d agents, %d tools, and %d tasks", 
                         len(self.agents), len(self.shared_tools), len(self.tasks))
 
@@ -79,3 +80,11 @@ class AgentZoo:
                     break
         except Exception as e:
             self.logger.error(f"Error in agent {agent.name}: {e}")
+            
+    def clean_up(self):
+        # Save file to workspace with all settings and configs
+        
+        
+        # Rename workspace folder with the name of the zoo
+    
+        pass
