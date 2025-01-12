@@ -463,7 +463,7 @@ def analyze_code(command: str, path: str) -> str:
         return f"Error during code analysis: {str(e)}"
 
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, evaluate_joke, write_to_blog, read_blog, wait], model=model, max_steps=999, remove_final_answer_tool=True, planning_interval=3, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
+agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, evaluate_joke, write_to_blog, read_blog], model=model, max_steps=999, remove_final_answer_tool=True, planning_interval=3, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
