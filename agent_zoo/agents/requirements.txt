@@ -2,3 +2,4 @@ python-dotenv
 git+https://github.com/benediktstroebl/smolagents.git
 litellm
 numpy
+slack_sdk

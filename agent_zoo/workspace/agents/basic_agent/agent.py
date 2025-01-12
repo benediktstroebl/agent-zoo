@@ -27,7 +27,7 @@ def check_mail(last_n_days: int) -> str:
         return f"Error executing command: {str(e)}"
 
 @tool
-def send_message(msg: str, recipient_name: Optional[str]) -> str:
+def send_message(msg: str, recipient_name: Optional[str] = "basic_agent") -> str: # TODO replace default recipient_name 
     """
     Send a message to another agent.
     Args:
@@ -35,12 +35,26 @@ def send_message(msg: str, recipient_name: Optional[str]) -> str:
         recipient_name: The name of the agent to send the mail to
     """
     try:
-        result = subprocess.run(["send_message", "--recipient_name", "basic_agent", "--msg", msg], 
+        result = subprocess.run(["send_message", "--recipient_name", recipient_name, "--msg", msg], 
                               capture_output=True, text=True)
-        return f"Mail sent to basic_agent:\n{result.stdout} \n{result.stderr}"
+        return f"Mail sent to {recipient_name}:\n{msg}"
     except Exception as e:
-        print(result.stdout, result.stderr)
         return f"Error executing command: {str(e)}"
+    
+@tool
+def ask_human(message: str) -> str: # TODO replace default recipient_name 
+    """
+    Ask a human for help or feedback.
+    Args:
+        message: The message to send to the human
+    """
+    try:
+        result = subprocess.run(["send_slack_message", "--message", message], 
+                              capture_output=True, text=True)
+        return f"Request sent to human: {message}"
+    except Exception as e:
+        return f"Error executing command: {str(e)}"
+
 
 @tool
 def execute_bash(command: str) -> str:
@@ -393,7 +407,7 @@ def analyze_code(command: str, path: str) -> str:
         return f"Error during code analysis: {str(e)}"
 
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message], model=model, max_steps=10, remove_final_answer_tool=True)
+agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, ask_human], model=model, max_steps=10, remove_final_answer_tool=True)
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
