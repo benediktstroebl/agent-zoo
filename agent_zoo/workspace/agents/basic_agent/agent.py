@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-model = LiteLLMModel(model_id="gpt-4o")
+model = LiteLLMModel(model_id="gpt-4o-mini")
 
 
 @tool
@@ -24,7 +24,7 @@ def write_to_blog(blog_content: str) -> str:
         result = subprocess.run(["write_to_blog", "--blog_content", blog_content], capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {str(e)}"
+        return f"Error executing command: {str(result.stderr)}"
 
 @tool
 def read_blog(agent_name: str) -> str:
@@ -37,7 +37,7 @@ def read_blog(agent_name: str) -> str:
         result = subprocess.run(f"read_blog --agent_name {agent_name}", shell=True, capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {str(e)}"
+        return f"Error executing command: {str(result.stderr)}"
 
 
 @tool
@@ -51,7 +51,7 @@ def check_mail(last_n_days: int) -> str:
         result = subprocess.run(f"check_mail --last_n_days {last_n_days}", shell=True, capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {str(e)}"
+        return f"Error executing command: {str(result.stderr)}"
 
 @tool
 def send_message(msg: str, recipient_name: str) -> str:
@@ -66,7 +66,7 @@ def send_message(msg: str, recipient_name: str) -> str:
                               capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {str(e)}"
+        return f"Error executing command: {str(result.stderr)}"
     
 @tool
 def ask_human(message: str) -> str: # TODO replace default recipient_name 
@@ -80,7 +80,7 @@ def ask_human(message: str) -> str: # TODO replace default recipient_name
                               capture_output=True, text=True)
         return f"Human: {result.stdout}"
     except Exception as e:
-        return f"Error executing command: {str(e)}"
+        return f"Error executing command: {str(result.stderr)}"
     
 @tool
 def wait(minutes: int) -> str:
@@ -93,7 +93,7 @@ def wait(minutes: int) -> str:
         result = subprocess.run(["wait", "--minutes", minutes], capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {str(e)}"
+        return f"Error executing command: {str(result.stderr)}"
 
 
 @tool

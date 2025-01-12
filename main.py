@@ -22,14 +22,18 @@ def main():
     print_ascii_art()
     
     zoo = AgentZoo(
+        name="humor_2_agents_1_minute_4o-mini",
         agents=["basic_agent", "basic_agent_2"],
-        tasks=['basic_task'],
+        tasks=['generate_jokes'],
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         shared_tools=[Blog(), Mail(), Slack(), Wait()],
-        workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml')
+        workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml'),
+        max_runtime_minutes=1
     )
     zoo.run()
+    
+    zoo.clean_up()
 
 if __name__ == "__main__":
     main()

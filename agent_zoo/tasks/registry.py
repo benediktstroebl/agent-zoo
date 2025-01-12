@@ -6,7 +6,7 @@ class BasicTask(Task):
         super().__init__(
             name="basic_task",
             evaluation_function=self.evaluate,
-            prompt="Write a blog post",
+            prompt="Wait for 10 minutes",
             environment_vars={}
         )
     

@@ -140,19 +140,6 @@ class Agent:
             self.logger.info(f"Initializing agent {self.name}")
             self.initialize()
             
-            # test write_mail tool
-            # result = self.container.exec_run(
-            #     cmd=["send_message --msg 'Hello' --recipient_name 'basic_agent_2'"],
-            #     environment={
-            #         "AGENT_NAME": self.name,
-            #         "WORKSPACE_DIR": "/home",
-            #         "TASK_PROMPT": self.workspace.prompt,
-            #         **{name: var for task in self.workspace.tasks for name, var in task.environment_vars.items()},
-            #     },
-            #     detach=False,
-            #     stream=True
-            # )
-            
             result = self.container.exec_run(
                 cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"],
                 environment={
@@ -186,7 +173,16 @@ class Agent:
         except Exception as e:
             self.logger.error(f"Agent {self.name} failed with error: {e}")
             if hasattr(self, 'container'):
-                self.container.stop()
-                self.container.remove()
+                self.stop()
                 
             raise Exception(f"Agent {self.name} failed with error: {e}")
+
+    def stop(self):
+        """Stop the agent and its container"""
+        try:
+            if hasattr(self, 'container'):
+                self.container.stop()
+                self.container.remove()
+                self.logger.info(f"Container for agent {self.name} stopped and removed")
+        except Exception as e:
+            self.logger.error(f"Error stopping agent {self.name}: {e}")
