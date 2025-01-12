@@ -22,8 +22,8 @@ def main():
     print_ascii_art()
     
     zoo = AgentZoo(
-        name="humor_2_agents_1_minute_4o-mini",
-        agents=["basic_agent", "basic_agent_2"],
+        name="humor_2_agents_20_minutes_4o",
+        agents=["monkey", "zebra"],
         tasks=['generate_jokes'],
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),

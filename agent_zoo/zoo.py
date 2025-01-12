@@ -14,8 +14,6 @@ from .logging_config import setup_logging
 import logging
 import os
 
-AGENT_NAMES = [ "MONKEY", "GORILLA", "GIRAFFE", "HAWK"]
-
 class AgentZoo:
     def __init__(self, agents: List[Path], shared_tools: List[AbstractSharedTool], tasks: List[Task], 
                  compute_config: Union[DockerComputeConfig,List[DockerComputeConfig]], 
@@ -49,15 +47,8 @@ class AgentZoo:
         stop_threads = threading.Event()
         
         # Setup agents and start threads
-        for animal, agent in zip(AGENT_NAMES, self.agents):
+        for agent in self.agents:
             agent.workspace = self.workspace
-            
-            # Add agent-specific Slack token to environment
-            agent_slack_token = os.getenv(f'{animal}_SLACK_BOT_TOKEN')
-            if agent_slack_token:
-                agent.environment_variables["SLACK_BOT_TOKEN"] = agent_slack_token
-            else:
-                self.logger.warning(f"No Slack token found for agent {animal}")
             
             self.logger.debug(f"Creating thread for agent {agent.name}")
             thread = threading.Thread(
@@ -96,5 +87,4 @@ class AgentZoo:
         
         
         # Rename workspace folder with the name of the zoo
-    
         pass
