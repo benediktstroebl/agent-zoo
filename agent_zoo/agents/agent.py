@@ -68,8 +68,6 @@ class Agent:
         volumes = {}
         for source, mount_opts in self.workspace.get_mount_options(self.name):
             volumes[source] = mount_opts
-            
-        print(volumes)
         
         container = docker_client.containers.run(
                 f"agent_zoo_{self.name}:latest",
@@ -107,6 +105,8 @@ class Agent:
         
         for tool in self.workspace.get_shared_tools():
             scripts = tool.get_tool_scripts()
+            
+            print(scripts)
             
             for tool_name, script in scripts.items():
                 # store script in local bin in docker container
