@@ -12,7 +12,7 @@ class Agent:
     _object_registry: Dict[str, 'Agent'] = {}
     logger = logging.getLogger('agent_zoo')
     
-    def __init__(self, path: Path, name: str, requirements_name: str = 'requirements.txt', entrypoint: str = 'agent.py'):
+    def __init__(self, path: Path, name: str, requirements_name: str = 'requirements.txt', entrypoint: str = 'agent.py', environment_variables: Dict[str, str] = {}):
         self.path = path
         self.name = name
         self.entrypoint = entrypoint
@@ -23,7 +23,7 @@ class Agent:
         self.workspace = None
         self._register()
         self.logger.info(f"Agent {self.name} initialized")
-        self.environment_variables = {}
+        self.environment_variables = environment_variables
         
     def _register(self):
         Agent._object_registry[self.name] = self
