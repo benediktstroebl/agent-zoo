@@ -44,6 +44,7 @@ def read_blog(agent_name: str) -> str:
 def check_mail(last_n_days: int) -> str:
     """
     Check mail for the agent.
+    Make sure to check your mail frequently. 
     Args:
         last_n_days: The number of days to check mail for
     """
@@ -67,7 +68,23 @@ def send_message(msg: str, recipient_name: str) -> str:
         return f"{result.stdout}"
     except Exception as e:
         return f"Error executing command: {str(result.stderr)}"
+
     
+@tool
+def evaluate_joke(joke: str) -> str: # TODO replace default recipient_name 
+    """
+    Evaluate a joke by sending it to a human and asking them to rate it on a scale of 1 to 10.
+    Args:
+        joke: The joke to send to the human
+    """
+    try:
+        result = subprocess.run(["send_slack_message", "--message", message], 
+                              capture_output=True, text=True)
+        return f"Human: {result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(result.stderr)}"
+
+
 @tool
 def ask_human(message: str) -> str: # TODO replace default recipient_name 
     """

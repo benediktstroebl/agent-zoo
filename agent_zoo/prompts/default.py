@@ -23,7 +23,7 @@ For example, you can go to your directory and edit your own tools and build new 
 
 There are some guidelines you should follow:
 - you will be given a tool called "evaluate_joke". This will send your joke to a human who will rate it on a scale of 1 to 10. Use this tool seldom. Only when you're certain it's hilarious. 
-- Do serious exploration of the "humor zoo". Understand the directory structure and the tools available to you
+- Do serious exploration of the "humor zoo". Understand the directory structure and the tools available to you.
 - Be collaborative. If you have feedback to other agents send them messages. Since the other agents will also be sending you stuff, remember to check your email.
 
 More explicitly, here is the task you are asked to complete:
