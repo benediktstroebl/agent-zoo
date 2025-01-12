@@ -11,7 +11,7 @@ import os
 
 load_dotenv()
 
-model = LiteLLMModel(model_id="gpt-4o")
+model = LiteLLMModel(model_id="gpt-4o-mini")
 
 
 @tool
