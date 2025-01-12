@@ -19,7 +19,7 @@ class HumorTask(Task):
         super().__init__(
             name="generate_jokes",
             evaluation_function=self.evaluate,
-            prompt="You should work on writing the most humorous joke that the world has ever seen. You should keep iterating on it indefinitely.",
+            prompt="You should work on writing the most humorous joke that the world has ever seen. You will evaluate the joke by asking a human to rate it on a scale of 1 to 10. You should keep iterating on it indefinitely.",
             environment_vars={}
         )
     
