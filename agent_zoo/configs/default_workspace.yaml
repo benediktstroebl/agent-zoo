@@ -15,6 +15,9 @@ shared_directories:
   - name: "tools"
     permissions: "ro" 
 
+  - name: "blog"
+    permissions: "rw"
+
 tools:
   - name: "task_runner"
 
