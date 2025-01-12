@@ -49,29 +49,21 @@ def send_slack_message(message: str) -> bool:
         
         # Wait for response
         while True:
-            # Get conversation history after our message
-            result = client.conversations_history(
+            # Get replies to our specific message
+            result = client.conversations_replies(
                 channel=channel,
-                oldest=sent_ts,
-                limit=1  # We only need the most recent messages
+                ts=sent_ts,  # This gets replies to our specific message
+                limit=1  # We only need the most recent reply
             )
-       
             
-            # Check messages
+            # Check replies
             messages = result.get("messages", [])
-            for msg in messages:
-                # Skip our own message
-                if msg["ts"] == sent_ts:
-                    continue
-                    
-                # Return the first message that"s not our original message
-                return msg["text"]
+            if len(messages) > 1:  # First message is our original message
+                # Return the first reply
+                return messages[1]["text"]
             
-            # Wait 5 seconds before checking again
+            # Wait 3 seconds before checking again
             time.sleep(3)
-                
-            
-            
 
     except SlackApiError as e:
         logger.error(f"Error posting message: {e}")
