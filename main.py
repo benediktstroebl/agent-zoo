@@ -11,7 +11,7 @@ from agent_zoo.shared_tools.mail.mail import Mail
 
 def main():
     zoo = AgentZoo(
-        agents=["basic_agent", "basic_agent_2"],
+        agents=["basic_agent"],
         tasks=['basic_task'],
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),

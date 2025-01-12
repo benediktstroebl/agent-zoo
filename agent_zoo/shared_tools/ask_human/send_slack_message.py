@@ -53,8 +53,9 @@ def send_slack_message(message: str) -> bool:
             result = client.conversations_history(
                 channel=channel,
                 oldest=sent_ts,
-                limit=5  # We only need the most recent messages
+                limit=1  # We only need the most recent messages
             )
+       
             
             # Check messages
             messages = result.get("messages", [])
@@ -65,11 +66,13 @@ def send_slack_message(message: str) -> bool:
                     
                 # Return the first message that"s not our original message
                 return msg["text"]
-                
+            
             # Wait 5 seconds before checking again
-            time.sleep(5)
+            time.sleep(3)
+                
+            
             
 
     except SlackApiError as e:
         logger.error(f"Error posting message: {e}")
-        return False
+        return f"Error receiving message: {e}"

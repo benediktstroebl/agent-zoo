@@ -3,6 +3,9 @@ import os
 # Import WebClient from Python SDK (github.com/slackapi/python-slack-sdk)
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # WebClient instantiates a client that can call API methods
 # When using Bolt, you can use either `app.client` or the `client` passed to listeners.
@@ -18,6 +21,15 @@ try:
         channel=channel_id, 
         text="@stroebl test"
     )
+    
+    # Get conversation history after our message
+    result = client.conversations_history(
+        channel=channel_id,
+        limit=1  # We only need the most recent messages
+    )
+    
+    
+    print(result)
     logger.info(result)
 
 except SlackApiError as e:
