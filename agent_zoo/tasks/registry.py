@@ -5,7 +5,7 @@ class BasicTask(Task):
         super().__init__(
             name="basic_task",
             evaluation_function=self.evaluate,
-            prompt="Send a message to the other agent",
+            prompt="Ask human for help",
             environment_vars={}
         )
     
