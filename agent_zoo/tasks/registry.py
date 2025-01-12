@@ -1,11 +1,12 @@
 from .task import Task
 
 class BasicTask(Task):
+
     def __init__(self):
         super().__init__(
             name="basic_task",
             evaluation_function=self.evaluate,
-            prompt="Send a message to the other agent",
+            prompt="Write a blog post",
             environment_vars={}
         )
     
