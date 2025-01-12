@@ -9,7 +9,17 @@ load_dotenv()
 
 from agent_zoo.shared_tools.mail.mail import Mail
 from agent_zoo.shared_tools.wait.wait_class import Wait
+
+def print_ascii_art():
+    try:
+        with open('ascii_load_image.txt', 'r') as f:
+            print(f.read())
+    except FileNotFoundError:
+        print("ASCII art file not found")
+
 def main():
+    print_ascii_art()
+    
     zoo = AgentZoo(
         agents=["basic_agent"],
         tasks=['basic_task'],
