@@ -27,7 +27,7 @@ def check_mail(last_n_days: int) -> str:
         return f"Error executing command: {str(e)}"
 
 @tool
-def send_message(msg: str, recipient_name: Optional[str] = "basic_agent") -> str: # TODO replace default recipient_name 
+def send_message(msg: str, recipient_name: str) -> str:
     """
     Send a message to another agent.
     Args:
@@ -37,7 +37,7 @@ def send_message(msg: str, recipient_name: Optional[str] = "basic_agent") -> str
     try:
         result = subprocess.run(["send_message", "--recipient_name", recipient_name, "--msg", msg], 
                               capture_output=True, text=True)
-        return f"Mail sent to {recipient_name}:\n{msg}"
+        return f"{result.stdout}"
     except Exception as e:
         return f"Error executing command: {str(e)}"
     

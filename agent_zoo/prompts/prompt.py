@@ -11,7 +11,7 @@ class Prompt(ABC):
         self.shared_tools = shared_tools
     
     @abstractmethod
-    def get(self) -> str:
+    def get(self, agent_name: str) -> str:
         pass
 
 class PromptRegistry:
@@ -22,10 +22,10 @@ class PromptRegistry:
         cls._prompts[name] = prompt_class
         
     @classmethod
-    def get(cls, name: str, tasks, agents, shared_tools) -> str:
+    def get(cls, name: str, tasks, agents, shared_tools, agent_name: str) -> str:
         prompt_class = cls._prompts[name]
         prompt = prompt_class(tasks, agents, shared_tools)
-        return prompt.get()
+        return prompt.get(agent_name)
     
     
     
