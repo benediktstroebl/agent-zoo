@@ -23,6 +23,7 @@ class Agent:
         self.workspace = None
         self._register()
         self.logger.info(f"Agent {self.name} initialized")
+        self.environment_variables = {}
         
     def _register(self):
         Agent._object_registry[self.name] = self
@@ -46,7 +47,7 @@ class Agent:
         shared_tools = self.workspace.get_shared_tools()
         shared_tool_env_vars = {key: value for tool in shared_tools for key, value in tool.environment_vars.items()}
         
-        container_env = {
+        container_env = self.environment_variables | {
                 **local_env_vars,
                 **shared_tool_env_vars,
                 "AGENT_NAME": self.name,

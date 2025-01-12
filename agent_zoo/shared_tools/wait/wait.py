@@ -1,7 +1,7 @@
-def wait(minutes: int):
+def wait(seconds: int):
     """
     Wait for a given number of minutes. 
     """
     import time
-    time.sleep(minutes * 60)
+    time.sleep(seconds)
     return "Waited for " + str(minutes) + " minutes"

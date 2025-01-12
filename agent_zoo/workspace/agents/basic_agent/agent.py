@@ -83,17 +83,17 @@ def ask_human(message: str) -> str: # TODO replace default recipient_name
         return f"Error executing command: {str(result.stderr)}"
     
 @tool
-def wait(minutes: int) -> str:
+def wait(seconds: int) -> str:
     """
     Wait for a given number of minutes.
     Args:
-        minutes: The number of minutes to wait
+        seconds: The number of seconds to wait
     """
     try:
-        result = subprocess.run(["wait", "--minutes", str(minutes)], capture_output=True, text=True)
+        result = subprocess.run(["wait", "--seconds", str(seconds)], capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {str(result.stderr)}"
+        return f"Error executing wait command - {e}"
 
 
 @tool
