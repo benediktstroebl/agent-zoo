@@ -455,11 +455,13 @@ if __name__ == "__main__":
     import os
     import json
     task_prompt = os.getenv("TASK_PROMPT")
+    agent_name = os.getenv("AGENT_NAME")
     agent.run(task_prompt)
     
     # write agent.logs to json file in /workspace/agents/logs/basic_agent.json
-    os.makedirs('/home/logs', exist_ok=True)
-    with open('/home/logs/basic_agent.json', 'w') as f:
+    os.makedirs(f'/home/{agent_name}/logs', exist_ok=True)
+    with open(f'/home/{agent_name}/logs/{agent_name}.json', 'w') as f:
         json.dump(agent.to_json(), f)
+
 
 
