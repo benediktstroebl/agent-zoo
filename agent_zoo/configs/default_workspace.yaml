@@ -1,5 +1,5 @@
 base_dir: "workspaces"
-prompt: "default"
+prompt: "humor"
 
 # Agent-specific directory structure
 agent_directories:
