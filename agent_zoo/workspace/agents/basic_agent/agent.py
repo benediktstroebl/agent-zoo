@@ -7,6 +7,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import List, Dict
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
