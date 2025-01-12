@@ -54,6 +54,19 @@ def ask_human(message: str) -> str: # TODO replace default recipient_name
         return f"Human: {result.stdout}"
     except Exception as e:
         return f"Error executing command: {str(e)}"
+    
+@tool
+def wait(minutes: int) -> str:
+    """
+    Wait for a given number of minutes.
+    Args:
+        minutes: The number of minutes to wait
+    """
+    try:
+        result = subprocess.run(["wait", "--minutes", minutes], capture_output=True, text=True)
+        return f"{result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(e)}"
 
 
 @tool
