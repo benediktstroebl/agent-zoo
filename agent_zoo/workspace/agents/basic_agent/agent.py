@@ -51,7 +51,7 @@ def ask_human(message: str) -> str: # TODO replace default recipient_name
     try:
         result = subprocess.run(["send_slack_message", "--message", message], 
                               capture_output=True, text=True)
-        return f"Request sent to human: {message}"
+        return f"Human: {result.stdout}"
     except Exception as e:
         return f"Error executing command: {str(e)}"
 
@@ -407,7 +407,7 @@ def analyze_code(command: str, path: str) -> str:
         return f"Error during code analysis: {str(e)}"
 
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, ask_human], model=model, max_steps=10, remove_final_answer_tool=True)
+agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, ask_human], model=model, max_steps=2, remove_final_answer_tool=False)
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
