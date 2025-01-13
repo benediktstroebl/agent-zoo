@@ -11,7 +11,7 @@ import os
 
 load_dotenv()
 
-model = LiteLLMModel(model_id="gpt-4o-mini")
+model = LiteLLMModel(model_id="gpt-4o")
 
 
 @tool
@@ -95,6 +95,37 @@ def ask_human(message: str) -> str: # TODO replace default recipient_name
         result = subprocess.run(["send_slack_message", "--message", message], 
                               capture_output=True, text=True)
         return f"Human: {result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(result.stderr)}"
+    
+    
+@tool
+def ask_albert(message: str) -> str: 
+    """
+    Ask Albert for help or feedback.
+    Args:
+        message: The message to send to Albert
+    """
+    try:
+        message = f"For Albert: {message}"
+        result = subprocess.run(["send_slack_message", "--message", message], 
+                              capture_output=True, text=True)
+        return f"Albert: {result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(result.stderr)}"
+    
+@tool
+def ask_robert(message: str) -> str:
+    """
+    Ask Robert for help or feedback.
+    Args:
+        message: The message to send to Robert
+    """
+    try:
+        message = f"For Robert: {message}"
+        result = subprocess.run(["send_slack_message", "--message", message], 
+                              capture_output=True, text=True)
+        return f"Robert: {result.stdout}"
     except Exception as e:
         return f"Error executing command: {str(result.stderr)}"
     
@@ -463,7 +494,7 @@ def analyze_code(command: str, path: str) -> str:
         return f"Error during code analysis: {str(e)}"
 
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, evaluate_joke, write_to_blog, read_blog], model=model, max_steps=999, remove_final_answer_tool=True, planning_interval=3, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
+agent = CodeAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, write_to_blog, read_blog, evaluate_joke, ask_human], model=model, max_steps=50, remove_final_answer_tool=True, planning_interval=3, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
@@ -473,11 +504,7 @@ if __name__ == "__main__":
     task_prompt = os.getenv("TASK_PROMPT")
     agent_name = os.getenv("AGENT_NAME")
     agent.run(task_prompt)
-    
-    # # write agent.logs to json file in /workspace/agents/logs/basic_agent.json
-    # os.makedirs(f'/home/{agent_name}/logs', exist_ok=True)
-    # with open(f'/home/{agent_name}/logs/{agent_name}.json', 'w') as f:
-    #     json.dump(agent.to_json(), f)
+
 
 
 
