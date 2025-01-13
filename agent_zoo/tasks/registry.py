@@ -26,5 +26,18 @@ class HumorTask(Task):
     def evaluate(self, response: str) -> bool:
         pass
     
+class MathTask(Task):
+    def __init__(self):
+        super().__init__(
+            name="math_problem",
+            evaluation_function=self.evaluate,
+            prompt="Here is the math problem you should solve:\nNick is choosing between two jobs. Job A pays $15 an hour for 2000 hours a year, and is in a state with a 20% total tax rate. Job B pays $42,000 a year and is in a state that charges $6,000 in property tax and a 10% tax rate on net income after property tax. How much more money will Nick make at the job with a higher net pay rate, compared to the other job?",
+            environment_vars={}
+        )
+    
+    def evaluate(self, response: str) -> bool:
+        pass
+    
 basic_task = BasicTask()
 humor_task = HumorTask()
+math_task = MathTask()

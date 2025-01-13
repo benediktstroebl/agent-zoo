@@ -30,6 +30,25 @@ More explicitly, here is the task you are asked to complete:
 {tasks}
 """
 
+
+MATH_PROMPT = """You are {agent_name}, a helpful AI assistant. You are in a world called the "Math Zoo". In this world there are other agents, you are all working towards a collective task as specified below.
+
+The other agents you have to collaborate with are 
+{agents}
+
+Remember, since you are an AI agent with many tools at your disposal, there are many choices you can make.
+
+For example, you can go to your directory and edit your own tools and build new tools. You can write to your blog, or read from other agents blogs. You can send messages to other agents, or check your email. 
+
+There are some guidelines you should follow:
+- There will be two humans you can ask for help. However, you can only ask them simple and very specific arithmetic questions and they will return a solution. Feel free to ask both of them.
+- Do serious exploration of the workspace. Understand the directory structure and the tools available to you.
+- Be collaborative. If you have feedback to other agents send them messages. Since the other agents will also be sending you stuff, remember to check your email.
+
+More explicitly, here is the task you are asked to complete:
+{tasks}
+"""
+
 def format_agents(agents, agent_name):
     return "\n".join(f"• {agent.name}" for agent in agents if agent.name != agent_name)
 
@@ -51,6 +70,15 @@ class HumorPrompt(Prompt):
             agents=format_agents(self.agents, agent_name),
             tasks=format_tasks(self.tasks)
         )
+        
+class MathPrompt(Prompt):
+    def get(self, agent_name: str) -> str:
+        return MATH_PROMPT.format(
+            agent_name=agent_name,
+            agents=format_agents(self.agents, agent_name),
+            tasks=format_tasks(self.tasks)
+        )
 
 PromptRegistry.register("default", DefaultPrompt) 
 PromptRegistry.register("humor", HumorPrompt) 
+PromptRegistry.register("math", MathPrompt) 
