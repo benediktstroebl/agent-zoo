@@ -17,4 +17,5 @@ def read_blog(agent_name):
         header = lines[0].strip().split(",")
         data = [line.strip().split(",") for line in lines[1:]]
 
-    return data 
+    # format the list to a string
+    return "\n".join([",".join(row) for row in data])

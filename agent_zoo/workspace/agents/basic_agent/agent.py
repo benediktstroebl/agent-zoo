@@ -194,7 +194,6 @@ def edit_file(command: str, path: str, content: Optional[str] = None,
 
     except Exception as e:
         return f"Error performing {command} operation: {str(e)}"
-
 @tool
 def explore_repo(command: str, path: str, options: Optional[Dict] = None) -> str:
     """
@@ -207,6 +206,13 @@ def explore_repo(command: str, path: str, options: Optional[Dict] = None) -> str
     try:
         options = options or {}
         path = Path(path)
+
+        # Check if path exists and is a directory for commands that require it
+        if command in ["explore", "find", "analyze_deps", "summarize"]:
+            if not path.exists():
+                return f"Path {path} does not exist"
+            if not path.is_dir():
+                return f"Path {path} is not a directory"
 
         if command == "explore":
             max_depth = options.get('max_depth', 3)
@@ -264,9 +270,6 @@ def explore_repo(command: str, path: str, options: Optional[Dict] = None) -> str
             return "\n".join(f"{k}: {v}" for k, v in info.items())
 
         elif command == "analyze_deps":
-            if not path.exists():
-                return f"Path {path} does not exist"
-
             # Find Python imports
             imports = set()
             for py_file in path.rglob("*.py"):
@@ -293,9 +296,6 @@ def explore_repo(command: str, path: str, options: Optional[Dict] = None) -> str
             ])
 
         elif command == "summarize":
-            if not path.exists():
-                return f"Path {path} does not exist"
-
             file_counts = {}
             total_size = 0
             python_line_count = 0
@@ -320,7 +320,6 @@ def explore_repo(command: str, path: str, options: Optional[Dict] = None) -> str
 
     except Exception as e:
         return f"Error during repository exploration: {str(e)}"
-    
 @tool
 def analyze_code(command: str, path: str) -> str:
     """
