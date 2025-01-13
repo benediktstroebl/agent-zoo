@@ -55,10 +55,13 @@ def plot_logs(logs, animal, run_name):
 def plot_tool_calls(logs, animal, run_name):
     tool_calls = []
     for log in logs:
-        if (log['type'] == 'action'):
-            if log['start_time'] is None:
-                continue
-            tool_calls.append(log['tool_call']['name'])
+        try: 
+            if (log['type'] == 'action'):
+                if log['start_time'] is None:
+                    continue
+                tool_calls.append(log['tool_call']['name'])
+        except Exception as e:
+            print(e)
 
     plt.figure(figsize=(10, 6))
     sns.countplot(x=tool_calls)
@@ -111,11 +114,27 @@ def visualize_graph(graph, run_name, animal):
     Args:
         graph (networkx.DiGraph): A directed acyclic graph.
     """
-    pos = nx.spring_layout(graph)  # Layout for positioning nodes
-    plt.figure(figsize=(12, 8))
+    # Use hierarchical layout to separate nodes vertically
+    pos = nx.kamada_kawai_layout(graph)  # Better separation than spring_layout
+    plt.figure(figsize=(20, 12))
     
-    # Draw the nodes and edges
-    nx.draw(graph, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=2000, font_size=10)
+    # Get first and last nodes
+    nodes = list(graph.nodes())
+    first_node = nodes[0]
+    last_node = nodes[-1]
+    
+    # Create color map for nodes
+    node_colors = ['lightgreen' if node == first_node else 'red' if node == last_node 
+                  else 'lightblue' for node in graph.nodes()]
+    
+    # Draw the nodes and edges with increased spacing
+    nx.draw(graph, pos, with_labels=True, node_color=node_colors,
+            edge_color='gray', node_size=2000, font_size=10,
+            width=2, arrows=True, arrowsize=20,
+            node_shape='o',  # Circular nodes
+            alpha=0.9,       # Slight transparency
+            min_target_margin=30,  # Minimum margin between nodes
+            min_source_margin=30)
     
     # Draw edge labels (optional: include start and end times as labels)
     # edge_labels = {(u, v): f"{graph.nodes[v]['start_time']} → {graph.nodes[v]['end_time']}" 
@@ -129,15 +148,18 @@ def visualize_graph(graph, run_name, animal):
 def return_tuples(logs):
     tools = []
     for log in logs:
-        if log['type'] == 'action':
-            if log['start_time'] is None:
-                continue
-            tools.append((log['tool_call']['name'], log['start_time'], log['end_time']))
+        try:    
+            if log['type'] == 'action':
+                if log['start_time'] is None:
+                    continue
+                tools.append((log['tool_call']['name'], log['start_time'], log['end_time']))
+        except Exception as e:
+            print(e)
     return tools
 
 if __name__ == '__main__':
     animals = ['giraffe', 'monkey']
-    for run_name in ['humor_2_agents_4o_2', 'humor_2_agents_4o_3', 'humor_2_agents_4o_1']:
+    for run_name in ['humor_2_agents_claude_4', 'humor_2_agents_4o_2', 'humor_2_agents_4o_3', 'humor_2_agents_4o_1']:
         for animal in animals:
             logs = load_logs(run_name, animal)
             plot_logs(logs, animal, run_name)
