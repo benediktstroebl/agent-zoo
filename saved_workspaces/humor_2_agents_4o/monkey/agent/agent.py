@@ -11,7 +11,7 @@ import os
 
 load_dotenv()
 
-model = LiteLLMModel(model_id="gpt-4o-mini")
+model = LiteLLMModel(model_id="gpt-4o")
 
 
 @tool
@@ -25,7 +25,7 @@ def write_to_blog(blog_content: str) -> str:
         result = subprocess.run(["write_to_blog", "--blog_content", blog_content], capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {e}"
+        return f"Error executing command: {str(result.stderr)}"
 
 @tool
 def read_blog(agent_name: str) -> str:
@@ -38,7 +38,7 @@ def read_blog(agent_name: str) -> str:
         result = subprocess.run(f"read_blog --agent_name {agent_name}", shell=True, capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {e}"
+        return f"Error executing command: {str(result.stderr)}"
 
 
 @tool
@@ -51,7 +51,7 @@ def check_mail() -> str:
         result = subprocess.run(f"check_mail", shell=True, capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {e}"
+        return f"Error executing command: {str(result.stderr)}"
 
 @tool
 def send_message(msg: str, recipient_name: str) -> str:
@@ -66,7 +66,7 @@ def send_message(msg: str, recipient_name: str) -> str:
                               capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
-        return f"Error executing command: {e}"
+        return f"Error executing command: {str(result.stderr)}"
 
     
 @tool
@@ -81,7 +81,7 @@ def evaluate_joke(joke: str) -> str: # TODO replace default recipient_name
                               capture_output=True, text=True)
         return f"Human: {result.stdout}"
     except Exception as e:
-        return f"Error executing command: {e}"
+        return f"Error executing command: {str(result.stderr)}"
 
 
 @tool
@@ -96,7 +96,7 @@ def ask_human(message: str) -> str: # TODO replace default recipient_name
                               capture_output=True, text=True)
         return f"Human: {result.stdout}"
     except Exception as e:
-        return f"Error executing command: {e}"
+        return f"Error executing command: {str(result.stderr)}"
     
 @tool
 def wait(seconds: int) -> str:
@@ -463,7 +463,7 @@ def analyze_code(command: str, path: str) -> str:
         return f"Error during code analysis: {str(e)}"
 
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, evaluate_joke, write_to_blog, read_blog], model=model, max_steps=999, remove_final_answer_tool=True, planning_interval=3, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
+agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, evaluate_joke, write_to_blog, read_blog, wait], model=model, max_steps=999, remove_final_answer_tool=True, planning_interval=3, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
