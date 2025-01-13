@@ -62,3 +62,9 @@ Sender: monkey
 
 Message: Final conclusion: Nick will earn $8,400 more annually with Job B compared to Job A, based on thorough calculations and verification.
 
+
+=========================
+Sender: monkey
+
+Message: Nick will earn $8,400 more annually from Job B, which has a net income of $32,400, compared to Job A's net income of $24,000.
+
