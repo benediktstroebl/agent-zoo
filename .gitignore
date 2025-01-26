@@ -4,3 +4,4 @@ uv.lock
 **/__pycache__/**
 workspaces/*
 logs/*
+agent_zoo/tasks/USACO/tests/*
