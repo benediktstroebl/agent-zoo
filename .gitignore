@@ -5,3 +5,4 @@ uv.lock
 workspaces/*
 logs/*
 agent_zoo/tasks/USACO/tests/*
+scratch.py
