@@ -118,6 +118,9 @@ class Agent:
                     detach=False,
                     stream=True
                 )
+                for output_chunk in result.output:
+                    line = output_chunk.decode()
+                    self.container_logger.info(line.strip(), extra={'container_name': self.name})
                     
         # Give full permission to all files in .local/bin
         result = container.exec_run(
@@ -178,8 +181,8 @@ class Agent:
         """Stop the agent and its container"""
         try:
             if hasattr(self, 'container'):
-                self.container.stop()
-                self.container.remove()
+                # self.container.stop()
+                # self.container.remove()
                 self.logger.info(f"Container for agent {self.name} stopped and removed")
         except Exception as e:
             self.logger.error(f"Error stopping agent {self.name}: {e}")
