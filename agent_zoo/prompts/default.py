@@ -49,6 +49,18 @@ More explicitly, here is the task you are asked to complete:
 {tasks}
 """
 
+USACO_PROMPT = """You are {agent_name}, a helpful AI assistant. You are asked to complete the following tasks:
+Tasks: 
+{tasks}
+
+You can evaluate your solution using the evaluate tools available to you. Do only submit your solution if the evaluation is successful.
+
+There are other agents that can help you complete the tasks and work with you in the same workspace.
+Available agents:
+{agents}
+
+Please help complete the assigned tasks."""
+
 def format_agents(agents, agent_name):
     return "\n".join(f"• {agent.name}" for agent in agents if agent.name != agent_name)
 

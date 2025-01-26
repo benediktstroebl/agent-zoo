@@ -11,7 +11,7 @@ import os
 
 load_dotenv()
 
-model = LiteLLMModel(model_id="gpt-4o")
+model = LiteLLMModel(model_id="anthropic/claude-3-5-sonnet-20241022", temperature=1.0)
 
 
 @tool
@@ -491,9 +491,24 @@ def analyze_code(command: str, path: str) -> str:
 
     except Exception as e:
         return f"Error during code analysis: {str(e)}"
+    
+
+@tool
+def evaluate_code(python_file: str) -> str:
+    """
+    Evaluate the given code.
+    Args:
+        python_file: The path to the python file to evaluate
+    """
+    try:
+        result = subprocess.run(["evaluate_usaco", "--python_file", python_file], 
+                              capture_output=True, text=True)
+        return f"{result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {e}"
 
 
-agent = CodeAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, write_to_blog, read_blog, evaluate_joke, ask_human], model=model, max_steps=50, remove_final_answer_tool=True, planning_interval=3, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
+agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, write_to_blog, read_blog, evaluate_code], model=model, max_steps=10, remove_final_answer_tool=True, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 

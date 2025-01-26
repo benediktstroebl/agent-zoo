@@ -1,0 +1,23 @@
+from attrs import define, field, asdict
+import os
+from pathlib import Path
+import sys  
+import shutil
+from ..abstract_tool import AbstractSharedTool
+from .evaluate_usaco import evaluate_usaco
+
+@define 
+class EvaluateUSACO(AbstractSharedTool):
+    tools = []
+
+    environment_vars = {}
+
+    def __sub_init__(self):
+        pass
+
+    def _init_tool(self, workspace_dir, agent_dirs):
+        # copy the USACO directory to a evaluate directory
+        shutil.copytree(Path("agent_zoo/tasks"), os.path.join(workspace_dir, "evaluate"))
+
+    def _get_tools(self):
+        return [evaluate_usaco]
