@@ -1,10 +1,23 @@
 from ..abstract_tool import AbstractSharedTool
 import os
-
+from typing import Dict, List
 from .send_slack_message import send_slack_message
+from agentslack import AgentSlack
 
 class Slack(AbstractSharedTool):
+    
+    def __init__(self, world_agent_mapping: Dict[str, List[str]]):
+        self.world_agent_mapping = world_agent_mapping
+        client = AgentSlack(port=8080)
+        client.start() 
+        for world in self.world_agent_mapping:
+            client.register_world(world)
+            for agent in self.world_agent_mapping[world]:
+                client.register_agent(agent, world)
+        super().__init__()
+    
     name: str = 'human_request'
+    world_agent_mapping: Dict[str, List[str]]
     environment_vars = {
         'HUMAN_REQUEST_PATH': 'human_request',
         'SLACK_CLIENT_SECRET': 'slack_client_secret',
@@ -14,7 +27,8 @@ class Slack(AbstractSharedTool):
     }
 
     def _init_tool(self, workspace_dir, agent_dirs):
-        pass 
+        pass
+        
 
     def _get_tools(self):
         return [send_slack_message]

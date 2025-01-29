@@ -31,9 +31,9 @@ class WorkspaceConfig:
             agent_directories=[
                 DirectoryConfig(**dir_config)
                 for dir_config in config['agent_directories']
-            ],
+            ] if config['agent_directories'] else [],
             shared_directories=[
                 DirectoryConfig(**dir_config)
                 for dir_config in config['shared_directories']
-            ]
+            ] if config['shared_directories'] else []
         ) 
