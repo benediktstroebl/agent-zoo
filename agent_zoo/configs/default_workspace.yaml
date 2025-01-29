@@ -1,5 +1,5 @@
 base_dir: "workspaces"
-prompt: "math"
+prompt: "usaco"
 
 # Agent-specific directory structure
 agent_directories:
@@ -9,15 +9,4 @@ agent_directories:
 
 # Shared resources at workspace root
 shared_directories:
-  - name: "tasks"
-    permissions: "ro"
-
-  - name: "tools"
-    permissions: "ro" 
-
-  - name: "blog"
-    permissions: "rw"
-
-tools:
-  - name: "task_runner"
 
