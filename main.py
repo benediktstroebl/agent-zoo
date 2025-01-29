@@ -31,7 +31,8 @@ def main():
             Blog(), 
             Slack(world_agent_mapping=
                   {
-        "w1": ['monkey', 'giraffe']})
+        "w1": ['monkey', 'giraffe']}),
+            EvaluateUSACO()
         ],
         workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml'),
         max_runtime_minutes=60    
