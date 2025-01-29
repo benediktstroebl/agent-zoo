@@ -12,6 +12,9 @@ import os
 load_dotenv()
 
 model = LiteLLMModel(model_id="anthropic/claude-3-5-sonnet-20241022", temperature=1.0)
+from agentslack import AgentSlack
+
+slack = AgentSlack(port=8080)
 
 
 @tool
@@ -49,21 +52,6 @@ def check_mail() -> str:
     """
     try:
         result = subprocess.run(f"check_mail", shell=True, capture_output=True, text=True)
-        return f"{result.stdout}"
-    except Exception as e:
-        return f"Error executing command: {e}"
-
-@tool
-def send_message(msg: str, recipient_name: str) -> str:
-    """
-    Send a message to another agent.
-    Args:
-        msg: The message to send
-        recipient_name: The name of the agent to send the mail to
-    """
-    try:
-        result = subprocess.run(["send_message", "--recipient_name", recipient_name, "--msg", msg], 
-                              capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
         return f"Error executing command: {e}"
@@ -507,8 +495,184 @@ def evaluate_code(python_file: str) -> str:
     except Exception as e:
         return f"Error executing command: {e}"
 
+@tool
+def send_direct_message(recipient_name: str, msg: str) -> str:
+    """
+    Send a direct message to another agent.
+    Args:
+        recipient_name: The name of the agent to send the message to
+        msg: The message to send
+    """
+    try:
+        response = slack.call_tool("send_direct_message",
+            message=msg,
+            your_name=os.getenv("AGENT_NAME"),
+            recipient_name=recipient_name
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
 
-agent = ToolCallingAgent(tools=[execute_bash, edit_file, DuckDuckGoSearchTool(), explore_repo, analyze_code, check_mail, send_message, write_to_blog, read_blog, evaluate_code], model=model, max_steps=10, remove_final_answer_tool=True, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
+@tool
+def send_message_to_channel(channel_name: str, msg: str) -> str:
+    """
+    Send a message to a channel.
+    Args:
+        channel_name: The name of the channel to send the message to
+        msg: The message to send
+    """
+    try:
+        response = slack.call_tool("send_message_to_channel",
+            message=msg,
+            your_name=os.getenv("AGENT_NAME"),
+            channel_name=channel_name
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def read_direct_message(sender_name: str) -> str:
+    """
+    Read direct messages from a specific sender.
+    Args:
+        sender_name: The name of the sender to read messages from
+    """
+    try:
+        response = slack.call_tool("read_direct_message",
+            your_name=os.getenv("AGENT_NAME"),
+            sender_name=sender_name
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def check_new_messages() -> str:
+    """
+    Check for new messages across all channels and DMs.
+    """
+    try:
+        response = slack.call_tool("check_new_messages",
+            your_name=os.getenv("AGENT_NAME")
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def read_channel(channel_name: str) -> str:
+    """
+    Read messages from a specific channel.
+    Args:
+        channel_name: The name of the channel to read
+    """
+    try:
+        response = slack.call_tool("read_channel",
+            your_name=os.getenv("AGENT_NAME"),
+            channel_name=channel_name
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def list_channels() -> str:
+    """
+    List all channels the agent has access to.
+    """
+    try:
+        response = slack.call_tool("list_all_my_channels",
+            agent_name=os.getenv("AGENT_NAME")
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def create_channel(channel_name: str) -> str:
+    """
+    Create a new channel.
+    Args:
+        channel_name: The name of the channel to create
+    """
+    try:
+        response = slack.call_tool("create_channel",
+            your_name=os.getenv("AGENT_NAME"),
+            channel_name=channel_name
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def get_human_info() -> str:
+    """
+    Get information about available humans to consult.
+    """
+    try:
+        response = slack.call_tool("get_human_info",
+            your_name=os.getenv("AGENT_NAME")
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def send_message_to_human(human_name: str, msg: str) -> str:
+    """
+    Send a message to a human.
+    Args:
+        human_name: The name of the human to send the message to
+        msg: The message to send
+    """
+    try:
+        response = slack.call_tool("send_message_to_human",
+            your_name=os.getenv("AGENT_NAME"),
+            human_name=human_name,
+            message=msg
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+@tool
+def add_member_to_channel(member_name: str, channel_name: str) -> str:
+    """
+    Add a member to a channel.
+    Args:
+        member_name: The name of the member to add
+        channel_name: The name of the channel to add the member to
+    """
+    try:
+        response = slack.call_tool("add_member_to_channel",
+            your_name=os.getenv("AGENT_NAME"),
+            member_to_add=member_name,
+            channel_name=channel_name
+        )
+        return f"{response}"
+    except Exception as e:
+        return f"Error executing command: {e}"
+
+agent = ToolCallingAgent(tools=[
+    execute_bash, 
+    edit_file, 
+    DuckDuckGoSearchTool(), 
+    explore_repo, 
+    analyze_code, 
+    check_mail, 
+    write_to_blog, 
+    read_blog,
+    send_direct_message,
+    send_message_to_channel,
+    read_direct_message,
+    check_new_messages,
+    read_channel,
+    list_channels,
+    create_channel,
+    get_human_info,
+    send_message_to_human,
+    add_member_to_channel], model=model, max_steps=30, remove_final_answer_tool=True, stream_json_logs=True, json_logs_path=f"/home/{os.getenv('AGENT_NAME')}/logs/logs.json")
 
 # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 

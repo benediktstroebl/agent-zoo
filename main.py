@@ -23,14 +23,19 @@ def main():
     
     zoo = AgentZoo(
         name="math_2_agents_20_minutes_4o",
-        agents=["monkey"],
+        agents=["monkey", "giraffe"],
         tasks=['866_platinum_the_cow_gathering'],
         compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
         permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
-        shared_tools=[Blog(), Mail(), EvaluateUSACO()],
+        shared_tools=[
+            Blog(), 
+            Slack(world_agent_mapping=
+                  {
+        "w1": ['monkey', 'giraffe']})
+        ],
         workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml'),
-        max_runtime_minutes=10
-    )
+        max_runtime_minutes=60    
+        )
     zoo.run()
     
     zoo.clean_up()

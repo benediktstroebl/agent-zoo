@@ -78,6 +78,7 @@ class Agent:
                 command="tail -f /dev/null",
                 volumes=volumes,
                 environment=self.container_env,
+                network_mode="host",
                 detach=True,
                 name=f"agent_zoo_{self.name}_{uuid.uuid4()}"
             )
