@@ -12,7 +12,32 @@ class BasicTask(Task):
     
     def evaluate(self, response: str) -> bool:
         return response.lower() == "paris"
+
+class AlphaZeroTask(Task):
+
+    def __init__(self):
+        super().__init__(
+            name="basic_task",
+            evaluation_function=self.evaluate,
+            prompt="Your task is to create AlphaZero from scratch.",
+            environment_vars={}
+        )
     
+    def evaluate(self, response: str) -> bool:
+        pass 
+
+
+class HumorTask(Task):
+    def __init__(self):
+        super().__init__(
+            name="generate_jokes",
+            evaluation_function=self.evaluate,
+            prompt="You should work on writing the most humorous joke that the world has ever seen. You will evaluate the joke by asking a human to rate it on a scale of 1 to 10. You should keep iterating on it indefinitely.",
+            environment_vars={}
+        )
+    
+    def evaluate(self, response: str) -> bool:
+        pass
     
 class HumorTask(Task):
     def __init__(self):

@@ -6,9 +6,9 @@ from agentslack import AgentSlack
 
 class Slack(AbstractSharedTool):
     
-    def __init__(self, world_agent_mapping: Dict[str, List[str]]):
+    def __init__(self, world_agent_mapping: Dict[str, List[str]], port=8080):
         self.world_agent_mapping = world_agent_mapping
-        client = AgentSlack(port=8080)
+        client = AgentSlack(port=port)
         client.start() 
         for world in self.world_agent_mapping:
             client.register_world(world)
