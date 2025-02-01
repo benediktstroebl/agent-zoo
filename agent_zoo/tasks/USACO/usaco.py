@@ -118,7 +118,7 @@ with open("agent_zoo/tasks/USACO/usaco_subset307_dict.json", "r") as f:
 platinum_tasks = [problem_id for problem_id in benchmark if benchmark[problem_id]["problem_level"] == "platinum"]
 
 # create a USACOTask for each platinum task
-platinum_tasks_tasks = [USACOTask(problem_id) for problem_id in platinum_tasks]
+# platinum_tasks_tasks = [USACOTask(problem_id) for problem_id in platinum_tasks]
 
 # Example usage (add to the bottom of usaco_task.py or in a separate test script)
 if __name__ == "__main__":

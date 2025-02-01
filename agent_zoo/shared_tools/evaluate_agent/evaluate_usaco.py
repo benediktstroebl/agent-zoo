@@ -1,4 +1,4 @@
-def evaluate_usaco(python_file):
+def evaluate_usaco(python_file, task_name):
     import os
     import subprocess
 
@@ -83,7 +83,7 @@ def evaluate_usaco(python_file):
         return passing
 
 
-    result = evaluate(python_file)
+    result = evaluate(python_file, task_name)
     
     if result:
         return "Solution passed all test cases!"
