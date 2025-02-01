@@ -6,3 +6,7 @@ workspaces/*
 logs/*
 agent_zoo/tasks/USACO/tests/*
 scratch.py
+agent_zoo/tasks/USACO/usaco_subset307_dict.json
+slack_config_sample.json
+config.json
+slack_config.json
