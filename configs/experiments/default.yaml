@@ -1,0 +1,13 @@
+compute_config:
+  cpu_cores: 2
+  memory_limit: 4g
+  gpu_devices: [0]
+  shared_memory_size: 1g
+  network_mode: bridge
+
+permissions_config:
+  cpu_cores: 2
+  memory_limit: 4g
+  gpu_devices: [0]
+  shared_memory_size: 1g
+  network_mode: bridge
