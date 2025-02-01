@@ -5,7 +5,7 @@ def evaluate_zygosity(csv_with_predicted_zygosity, task_name):
     from sklearn.metrics import precision_score, recall_score, f1_score
     
     # read the data
-    data = pd.read_csv(f"/home/tasks/zygosity/data/fake_twin_data_batch1_nocode/{task_name}_test.csv")
+    data = pd.read_csv(f"/home/evaluate/zygosity/data/fake_twin_data_batch1_nocode/{task_name}_test.csv")
     
     predicted_zygosity = pd.read_csv(csv_with_predicted_zygosity)
     
@@ -14,7 +14,7 @@ def evaluate_zygosity(csv_with_predicted_zygosity, task_name):
     else:
         # compare the predicted zygosity with the actual zygosity
         predicted_zygosity = predicted_zygosity["predicted_zygosity"]
-        actual_zygosity = data["zygosity"]
+        actual_zygosity = data["zyg"]
         
         # calculate the accuracy
         accuracy = (predicted_zygosity == actual_zygosity).mean()
