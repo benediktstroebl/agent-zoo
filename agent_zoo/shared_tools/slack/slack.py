@@ -13,18 +13,17 @@ class Slack(AbstractSharedTool):
     client: AgentSlack = field(default=None)
     environment_vars: dict = field(default=None)
     
-    port = find_free_port()
-    client = AgentSlack(port=port)
-    client.start()
+    def __attrs_post_init__(self):
+        self.port = find_free_port()
+        self.client = AgentSlack(port=self.port)
+        self.client.start()
+        self.environment_vars = {'SLACK_PORT': self.port}
         
-    environment_vars = {'SLACK_PORT': port}
-    
-    def __post_init__(self):
-        for world in self.world_agent_mapping:
-            self.client.register_world(world)
-            for agent in self.world_agent_mapping[world]:
-                self.client.register_agent(agent, world)
-
+        if self.world_agent_mapping:
+            for world in self.world_agent_mapping:
+                self.client.register_world(world)
+                for agent in self.world_agent_mapping[world]:
+                    self.client.register_agent(agent, world)
 
     def _init_tool(self, workspace_dir, agent_dirs):
         pass
