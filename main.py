@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import hydra
 from omegaconf import DictConfig, OmegaConf
 from hydra.utils import instantiate
+import os 
 
 load_dotenv()
 
@@ -20,25 +21,22 @@ def print_ascii_art():
 
 @hydra.main(version_base=None, config_path="configs", config_name="config")
 def main(config: DictConfig):
-    experiment_config = config.experiments
     print_ascii_art()
 
+    experiment_config = config.experiments
     shared_tools = []
     print(experiment_config.shared_tools)
     for _, tool in experiment_config.shared_tools.items():
         shared_tools.append(instantiate(tool))
 
-
-    print(experiment_config.agents)
     agents = []
     for _, agent in experiment_config.agents.items():
         agent = instantiate(agent)
         agent.environment_variables = {
-            "SLACK_BOT_TOKEN": agent.environment_variables["SLACK_BOT_TOKEN"],
+            "SLACK_BOT_TOKEN": os.getenv(agent.environment_variables["SLACK_BOT_TOKEN"]),
         }
         agents.append(agent)
 
-    
     zoo = AgentZoo(
         name=experiment_config.world_name,
         agents=agents,

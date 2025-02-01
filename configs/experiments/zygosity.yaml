@@ -12,18 +12,18 @@ shared_tools:
   Slack:
     _target_: agent_zoo.shared_tools.Slack
     world_agent_mapping: 
-      ${world_name}: 
-        ${....agents.agent_1.name}
-        ${....agents.agent_2.name}
+      math_2_agents_20_minutes_4o: 
+        - Phil
+        - Ian
 
 tasks: 
-  - zygosity
+  - twindat_sim_1k_24
 
 agents:   
   agent_1: 
     _target_: agent_zoo.agents.Agent
     path: agent_zoo/workspace/agents/basic_agent/
-    name: Phil
+    name: phil
     requirements_name: requirements.txt
     entrypoint: agent.py
     environment_variables: 
@@ -39,7 +39,7 @@ agents:
   agent_2: 
     _target_: agent_zoo.agents.Agent
     path: agent_zoo/workspace/agents/basic_agent
-    name: Ian
+    name: ian
     requirements_name: requirements.txt
     entrypoint: agent.py
     environment_variables: 

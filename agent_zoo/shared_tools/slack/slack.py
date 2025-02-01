@@ -24,6 +24,7 @@ class Slack(AbstractSharedTool):
         
         if self.world_agent_mapping:
             for world in self.world_agent_mapping:
+                print("WORLD_AGENT_MAPPING", self.world_agent_mapping)
                 self.client.register_world(world)
                 for agent in self.world_agent_mapping[world]:
                     self.client.register_agent(agent, world)
