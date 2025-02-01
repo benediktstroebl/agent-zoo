@@ -17,7 +17,7 @@ class AbstractSharedTool:
         self.inputs = inputs
         self.output_type = output_type
         self.environment_vars = environment_vars
-        self.requirements_file = requirements_file
+        self.requirements_file = requirements_file # TODO: handle this in docker image build. Right now it's just a placeholder
         
     # take this from smolagents 
     name: str

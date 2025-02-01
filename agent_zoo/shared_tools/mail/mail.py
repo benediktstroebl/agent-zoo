@@ -4,8 +4,6 @@ from pathlib import Path
 from ..abstract_tool import AbstractSharedTool
 from .check_mail import check_mail
 from .send_message import send_message
-from .check_slack_dm import load_messages_from_conversation, check_on_going_conversations
-from .slack_send_dm import send_default_message
 
 @define 
 class Mail(AbstractSharedTool):

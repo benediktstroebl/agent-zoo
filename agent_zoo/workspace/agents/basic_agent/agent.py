@@ -149,7 +149,8 @@ def edit_file(command: str, path: str, content: Optional[str] = None,
         if command == "view":
             if path.is_file():
                 with open(path, 'r') as f:
-                    return f.read()
+                    content = f.read()
+                    return content[:1000] + ('...' if len(content) > 1000 else '')
             elif path.is_dir():
                 files = list(path.rglob('*'))[:100]
                 return "\n".join(str(f.relative_to(path)) for f in files)
@@ -466,18 +467,32 @@ def analyze_code(command: str, path: str) -> str:
     
 
 @tool
-def evaluate_code(python_file: str) -> str:
+def evaluate_code(python_file: str, task_name: str) -> str:
     """
     Evaluate the given code.
     Args:
         python_file: The path to the python file to evaluate
+        task_name: The name of the task to evaluate
     """
     try:
-        result = subprocess.run(["evaluate_usaco", "--python_file", python_file], 
+        result = subprocess.run(["evaluate_usaco", "--python_file", python_file, "--task_name", task_name], 
                               capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
         return f"Error executing command: {e}"
+    
+    
+@tool
+def evaluated_zygosity_predictions(path_to_csv_with_predictions: str, task_name: str) -> str:
+    """
+    Evaluate the zygosity predictions.
+    Args:
+        path_to_csv_with_predictions: The path to the csv file with the predictions
+        task_name: The name of the task to evaluate
+    """
+    result = subprocess.run(["evaluate_zygosity", "--csv_with_predicted_zygosity", path_to_csv_with_predictions, "--task_name", task_name], 
+                              capture_output=True, text=True)
+    return f"{result.stdout}"
 
 @tool
 def send_direct_message(recipient_name: str, msg: str) -> str:
@@ -646,6 +661,8 @@ def main(model_name: str, temperature: float , max_steps: int, remove_final_answ
         DuckDuckGoSearchTool(), 
         explore_repo, 
         analyze_code, 
+        evaluate_code,
+        evaluated_zygosity_predictions,
         write_to_blog, 
         read_blog,
         send_direct_message,
