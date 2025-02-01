@@ -27,7 +27,6 @@ class Agent:
         self.agent_args = agent_args
         
     def _register(self):
-        print(Agent._object_registry)
         Agent._object_registry[self.name] = self
         self.logger.debug(f"Agent {self.name} registered")
         
@@ -148,7 +147,6 @@ class Agent:
             self.logger.info(f"Initializing agent {self.name}")
             self.initialize()
             
-            print(self.agent_args)
             result = self.container.exec_run(
                 cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"] + [str(arg) for arg in self.agent_args],
                 environment=self.container_env,
