@@ -22,7 +22,7 @@ class USACOTask(Task):
             "num_tests": self.benchmark[problem_id]["num_tests"]
         }
         
-        prompt_description = self.benchmark[problem_id]["description"]
+        prompt_description = self.benchmark[problem_id]["description_no_samples"]
 
         super().__init__(
             name=self.problem_info["problem_id"],
