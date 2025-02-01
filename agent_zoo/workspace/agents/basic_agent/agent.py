@@ -693,7 +693,7 @@ if __name__ == "__main__":
     parser.add_argument("--port", type=int, default=8080)
     args = parser.parse_args()
 
-    slack = AgentSlack(port=args.port)
+    slack = AgentSlack(port=os.getenv("SLACK_PORT"))
 
 
     main(model_name=args.model_name, temperature=args.temperature, max_steps=args.max_steps, remove_final_answer_tool=args.remove_final_answer_tool, stream_json_logs=args.stream_json_logs, json_logs_path=args.json_logs_path)

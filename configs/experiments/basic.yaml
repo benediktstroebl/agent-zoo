@@ -2,21 +2,18 @@ defaults:
   - _self_
   - default
 
-world_name: math_2_agents_20_minutes_4o
+world_name: w1
 
 shared_tools: 
-  EvaluateZygosity:
-    _target_: agent_zoo.shared_tools.EvaluateZygosity
-  Blog:
-    _target_: agent_zoo.shared_tools.Blog
   Slack:
     _target_: agent_zoo.shared_tools.Slack
     world_agent_mapping: 
-      math_2_agents_20_minutes_4o: 
+      w1: 
         - phil
+        - ian
 
 tasks: 
-  - twindat_sim_1k_24
+  - basic_task
 
 agents:   
   agent_1: 
@@ -27,6 +24,22 @@ agents:
     entrypoint: agent.py
     environment_variables: 
       SLACK_BOT_TOKEN: MONKEY_SLACK_BOT_TOKEN
+    agent_args: 
+      - --model_name
+      - anthropic/claude-3-5-sonnet-20241022
+      - --temperature
+      - 1.0
+      - --max_steps
+      - 30
+
+  agent_2: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: ian
+    requirements_name: requirements.txt
+    entrypoint: agent.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: GIRAFFE_SLACK_BOT_TOKEN
     agent_args: 
       - --model_name
       - anthropic/claude-3-5-sonnet-20241022
