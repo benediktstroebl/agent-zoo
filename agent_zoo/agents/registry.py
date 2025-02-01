@@ -31,5 +31,15 @@ basic_agent_2 = Agent(
     }
 )
 
+basic_agent_3 = Agent(
+    path=Path('agent_zoo/workspace/agents/basic_agent'),
+    name='hawk',
+    requirements_name='requirements.txt',
+    entrypoint='agent.py',
+    environment_variables={
+        "SLACK_BOT_TOKEN": os.getenv('HAWK_SLACK_BOT_TOKEN')
+    }
+)
+
 
 
