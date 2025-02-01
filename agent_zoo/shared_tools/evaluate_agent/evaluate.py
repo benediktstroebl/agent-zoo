@@ -8,9 +8,8 @@ from .evaluate_usaco import evaluate_usaco
 
 @define 
 class EvaluateUSACO(AbstractSharedTool):
+    environment_vars: dict = field(default={})
     tools = []
-
-    environment_vars = {}
 
     def __sub_init__(self):
         pass

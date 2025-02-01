@@ -10,6 +10,7 @@ from .write_to_blog import write_to_blog
 @define 
 class Blog(AbstractSharedTool):
     communal_blog: bool = field(default=True)
+    environment_vars: dict = field(default=None)
     tools = []
 
     environment_vars = {

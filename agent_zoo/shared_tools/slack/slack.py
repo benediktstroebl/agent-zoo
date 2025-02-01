@@ -4,35 +4,27 @@ from typing import Dict, List
 from utils.ports import find_free_port
 from .send_slack_message import send_slack_message
 from agentslack import AgentSlack
+from attrs import define, field
 
+@define
 class Slack(AbstractSharedTool):
+    world_agent_mapping: Dict[str, List[str]] = field(default=None)
+    port: int = field(default=None)
+    client: AgentSlack = field(default=None)
+    environment_vars: dict = field(default=None)
     
-    def __init__(self, world_agent_mapping: Dict[str, List[str]]):
-        self.world_agent_mapping = world_agent_mapping
+    port = find_free_port()
+    client = AgentSlack(port=port)
+    client.start()
         
-        # select a free port for the slack client 
-        self.port = find_free_port()
-        
-        client = AgentSlack(port=self.port)
-        client.start() 
+    environment_vars = {'SLACK_PORT': port}
+    
+    def __post_init__(self):
         for world in self.world_agent_mapping:
-            client.register_world(world)
+            self.client.register_world(world)
             for agent in self.world_agent_mapping[world]:
-                client.register_agent(agent, world)
-                
-        self.name: str = 'human_request'
-        self.world_agent_mapping: Dict[str, List[str]]
-        self.environment_vars = {
-            'HUMAN_REQUEST_PATH': 'human_request',
-            'SLACK_CLIENT_SECRET': 'slack_client_secret',
-            'SLACK_CLIENT_ID': 'slack_client_id',
-            'SLACK_BOT_TOKEN': 'slack_bot_token',
-            'SLACK_CHANNEL_ID': 'slack_channel_id',
-            'SLACK_PORT': self.port
-        }
-        super().__init__()
-    
-        
+                self.client.register_agent(agent, world)
+
 
     def _init_tool(self, workspace_dir, agent_dirs):
         pass
