@@ -10,3 +10,11 @@ agent_zoo/tasks/USACO/usaco_subset307_dict.json
 slack_config_sample.json
 config.json
 slack_config.json
+agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/twindat_sim_1k_24_test.csv
+agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/twindat_sim_1k_24_train.csv
+agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/twindat_sim_1k_24.csv
+agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/twindat_sim_100k_24.csv
+agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/twindat_sim_100k_99.csv
+agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/twindat_sim_500k_99.csv
+outputs/*
+agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/.DS_Store

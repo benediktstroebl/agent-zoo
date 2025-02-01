@@ -5,8 +5,8 @@ defaults:
 world_name: math_2_agents_20_minutes_4o
 
 shared_tools: 
-  EvaluateUSACO:
-    _target_: agent_zoo.shared_tools.EvaluateUSACO
+  EvaluateZygosity:
+    _target_: agent_zoo.shared_tools.EvaluateZygosity
   Blog:
     _target_: agent_zoo.shared_tools.Blog
   Slack:
