@@ -23,6 +23,7 @@ class AgentZoo:
                  name: str = None):
         self.logger, self.get_container_handler = setup_logging()
         self.agents = agents
+        self.slack_names = agents 
         self.shared_tools = shared_tools
         self.tasks = Task.get_tasks(tasks)
         self.compute_config = compute_config
@@ -47,8 +48,9 @@ class AgentZoo:
         stop_threads = threading.Event()
         
         # Setup agents and start threads
-        for agent in self.agents:
+        for agent, slack_name in zip(self.agents, self.slack_names):
             agent.workspace = self.workspace
+            agent.slack_name = slack_name
             
             self.logger.debug(f"Creating thread for agent {agent.name}")
             thread = threading.Thread(
