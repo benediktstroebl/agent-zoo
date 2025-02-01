@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "agentslack>=1.0.2",
+    "agentslack>=1.0.4",
     "attrs>=24.3.0",
     "docker>=7.1.0",
     "matplotlib>=3.10.0",
