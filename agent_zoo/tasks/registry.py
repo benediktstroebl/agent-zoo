@@ -6,7 +6,7 @@ class BasicTask(Task):
         super().__init__(
             name="basic_task",
             evaluation_function=self.evaluate,
-            prompt="Wait for 10 minutes",
+            prompt="Send a message to the other agent",
             environment_vars={}
         )
     
