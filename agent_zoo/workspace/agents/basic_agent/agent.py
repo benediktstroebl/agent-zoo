@@ -11,10 +11,10 @@ import os
 
 load_dotenv()
 
-model = LiteLLMModel(model_id="anthropic/claude-3-5-sonnet-20241022", temperature=1.0)
+model = LiteLLMModel(model_id="anthropic/claude-3-5-sonnet-20241022", temperature=0.7)
 from agentslack import AgentSlack
 
-slack = AgentSlack(port=8080)
+slack = AgentSlack(port=os.getenv('SLACK_PORT'))
 
 
 @tool
@@ -39,19 +39,6 @@ def read_blog(agent_name: str) -> str:
     """
     try:
         result = subprocess.run(f"read_blog --agent_name {agent_name}", shell=True, capture_output=True, text=True)
-        return f"{result.stdout}"
-    except Exception as e:
-        return f"Error executing command: {e}"
-
-
-@tool
-def check_mail() -> str:
-    """
-    Check mail for the agent.
-    Make sure to check your mail frequently. 
-    """
-    try:
-        result = subprocess.run(f"check_mail", shell=True, capture_output=True, text=True)
         return f"{result.stdout}"
     except Exception as e:
         return f"Error executing command: {e}"
@@ -660,7 +647,7 @@ agent = ToolCallingAgent(tools=[
     DuckDuckGoSearchTool(), 
     explore_repo, 
     analyze_code, 
-    check_mail, 
+    evaluate_code,
     write_to_blog, 
     read_blog,
     send_direct_message,

@@ -46,8 +46,7 @@ def evaluate_usaco(python_file):
         return True
 
     def test_solution(solution_file, test_cases_path, num_test_cases):
-        """Tests the solution against all test cases."""
-        
+        """Tests the solution against all test cases."""        
         passed_count = 0
         for i in range(1, num_test_cases + 1):
             input_file = os.path.join(test_cases_path, f"{i}.in")
@@ -69,16 +68,18 @@ def evaluate_usaco(python_file):
             print("Solution: FAILING. Passed", passed_count, "out of", num_test_cases, "test cases.")
             return False, passed_count
 
-    def evaluate(solution_file: str) -> bool:
+    def evaluate(solution_file: str, task_name: str) -> bool:
         """
         Evaluates the USACO solution. The response should be the path to the solution file.
         """
         
-        # TODO this for now contains the one hard-coded usaco problem. We can generalize this
-        test_cases_path = "/home/evaluate/USACO/tests/866_platinum_the_cow_gathering"
-        num_tests = 17
+        test_cases_path = f"/home/evaluate/USACO/tests/{task_name}"
+        
+        # Get number of test cases
+        num_tests = len([f for f in os.listdir(test_cases_path) if os.path.isfile(os.path.join(test_cases_path, f))])/2
 
         passing, _ = test_solution(solution_file, test_cases_path, num_tests)
+        
         return passing
 
 
