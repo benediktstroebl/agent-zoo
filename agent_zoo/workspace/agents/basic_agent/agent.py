@@ -483,14 +483,14 @@ def evaluate_code(python_file: str, task_name: str) -> str:
     
     
 @tool
-def evaluated_zygosity_predictions(path_to_csv_with_predictions: str, task_name: str) -> str:
+def evaluated_zygosity_predictions(abs_path_to_csv_with_predictions: str, task_name: str) -> str:
     """
     Evaluate the zygosity predictions.
     Args:
-        path_to_csv_with_predictions: The path to the csv file with the predictions
+        abs_path_to_csv_with_predictions: The absolute path to the csv file with the predictions
         task_name: The name of the task to evaluate
     """
-    result = subprocess.run(["evaluate_zygosity", "--csv_with_predicted_zygosity", path_to_csv_with_predictions, "--task_name", task_name], 
+    result = subprocess.run(["evaluate_zygosity", "--csv_with_predicted_zygosity", abs_path_to_csv_with_predictions, "--task_name", task_name], 
                               capture_output=True, text=True)
     return f"{result.stdout}"
 
