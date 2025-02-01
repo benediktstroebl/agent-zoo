@@ -1,53 +1,53 @@
-# defaults: 
-#   - _self_
-#   - default
+defaults: 
+  - _self_
+  - default
 
-# world_name: math_2_agents_20_minutes_4o
+world_name: math_2_agents_20_minutes_4o
 
-# shared_tools: 
-#   EvaluateUSACO:
-#     _target_: agent_zoo.shared_tools.EvaluateUSACO
-#   Blog:
-#     _target_: agent_zoo.shared_tools.Blog
-#   Slack:
-#     _target_: agent_zoo.shared_tools.Slack
-#     world_agent_mapping: 
-#       math_2_agents_20_minutes_4o: 
-#         - ${.....agents.agent_1.name}
-#         - ${.....agents.agent_2.name}
+shared_tools: 
+  EvaluateUSACO:
+    _target_: agent_zoo.shared_tools.EvaluateUSACO
+  Blog:
+    _target_: agent_zoo.shared_tools.Blog
+  Slack:
+    _target_: agent_zoo.shared_tools.Slack
+    world_agent_mapping: 
+      math_2_agents_20_minutes_4o: 
+        - ${.....agents.agent_1.name}
+        - ${.....agents.agent_2.name}
 
-# tasks: 
-#   - 866_platinum_the_cow_gathering
+tasks: 
+  - 866_platinum_the_cow_gathering
 
-# agents:   
-#   agent_1: 
-#     _target_: agent_zoo.agents.Agent
-#     path: agent_zoo/workspace/agents/basic_agent/
-#     name: jamie
-#     requirements_name: requirements.txt
-#     entrypoint: agent.py
-#     environment_variables: 
-#       SLACK_BOT_TOKEN: MONKEY_SLACK_BOT_TOKEN
-#     agent_args: 
-#       - --model_name
-#       - anthropic/claude-3-5-sonnet-20241022
-#       - --temperature
-#       - 1.0
-#       - --max_steps
-#       - 30
+agents:   
+  agent_1: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: jamie
+    requirements_name: requirements.txt
+    entrypoint: agent.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: MONKEY_SLACK_BOT_TOKEN
+    agent_args: 
+      - --model_name
+      - anthropic/claude-3-5-sonnet-20241022
+      - --temperature
+      - 1.0
+      - --max_steps
+      - 30
 
-#   agent_2: 
-#     _target_: agent_zoo.agents.Agent
-#     path: agent_zoo/workspace/agents/basic_agent
-#     name: rich
-#     requirements_name: requirements.txt
-#     entrypoint: agent.py
-#     environment_variables: 
-#       SLACK_BOT_TOKEN: GIRAFFE_SLACK_BOT_TOKEN
-#     agent_args: 
-#       - --model_name
-#       - anthropic/claude-3-5-sonnet-20241022
-#       - --temperature
-#       - 1.0
-#       - --max_steps
-#       - 30
+  agent_2: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent
+    name: rich
+    requirements_name: requirements.txt
+    entrypoint: agent.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: GIRAFFE_SLACK_BOT_TOKEN
+    agent_args: 
+      - --model_name
+      - anthropic/claude-3-5-sonnet-20241022
+      - --temperature
+      - 1.0
+      - --max_steps
+      - 30

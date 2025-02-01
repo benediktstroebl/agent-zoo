@@ -22,10 +22,11 @@ def print_ascii_art():
 @hydra.main(version_base=None, config_path="configs", config_name="config")
 def main(config: DictConfig):
     print_ascii_art()
+    
 
     experiment_config = config.experiments
     shared_tools = []
-    print(experiment_config.shared_tools)
+    
     for _, tool in experiment_config.shared_tools.items():
         shared_tools.append(instantiate(tool))
 
@@ -36,20 +37,22 @@ def main(config: DictConfig):
             "SLACK_BOT_TOKEN": os.getenv(agent.environment_variables["SLACK_BOT_TOKEN"]),
         }
         agents.append(agent)
-
-    zoo = AgentZoo(
-        name=experiment_config.world_name,
-        agents=agents,
-        tasks=experiment_config.tasks,
-        compute_config=DockerComputeConfig(**experiment_config.compute_config),
-        permissions_config=PermissionsConfig(**experiment_config.permissions_config),
-        shared_tools=shared_tools, # load in from hydra 
-        workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml'),
-        max_runtime_minutes=60    
-        )
-    zoo.run()
     
-    zoo.clean_up()
+    for i in range(config.repetitions):
+        print(f"Running experiment {i+1} of {config.repetitions} for {experiment_config.world_name}")
+        zoo = AgentZoo(
+            name=experiment_config.world_name,
+            agents=agents,
+            tasks=experiment_config.tasks,
+            compute_config=DockerComputeConfig(**experiment_config.compute_config),
+            permissions_config=PermissionsConfig(**experiment_config.permissions_config),
+            shared_tools=shared_tools, # load in from hydra 
+            workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml'),
+            max_runtime_minutes=60    
+            )
+        zoo.run()
+        
+        zoo.clean_up()
 
 if __name__ == "__main__":
     main()

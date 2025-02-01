@@ -1,3 +1,11 @@
 defaults:
-  - experiments: basic 
   - _self_
+  - experiments: basic
+
+
+experiment_runs:
+  basic: 1
+  zygosity: 1
+  USACO: 1
+
+
