@@ -5,13 +5,19 @@ import sys
 
 
 class AbstractSharedTool:
-    def __init__(self):
-        self.name = ""
-        self.description = ""
-        self.inputs = {}
-        self.output_type = ""
-        self.environment_vars = {}
-        self.requirements_file = "requirements.txt"
+    def __init__(self, 
+                 name: str = "", 
+                 description: str = "", 
+                 inputs: Dict[str, Dict[str, Union[str, type, bool]]] = {}, 
+                 output_type: str = "", 
+                 environment_vars: Dict[str, str] = {}, 
+                 requirements_file: str = ""):
+        self.name = name
+        self.description = description
+        self.inputs = inputs
+        self.output_type = output_type
+        self.environment_vars = environment_vars
+        self.requirements_file = requirements_file
         
     # take this from smolagents 
     name: str

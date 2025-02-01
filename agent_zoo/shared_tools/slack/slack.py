@@ -4,35 +4,33 @@ from typing import Dict, List
 from utils.ports import find_free_port
 from .send_slack_message import send_slack_message
 from agentslack import AgentSlack
+from attrs import define, field
 
+@define
 class Slack(AbstractSharedTool):
+    world_agent_mapping: Dict[str, List[str]] = field(default=None)
+    port: int = field(default=None)
+    client: AgentSlack = field(default=None)
+    environment_vars: dict = field(default=None)
     
+<<<<<<< HEAD
     def __init__(self, world_agent_mapping: Dict[str, List[str]], port=8080):
         self.world_agent_mapping = world_agent_mapping
         
         # select a free port for the slack client 
+=======
+    def __attrs_post_init__(self):
+>>>>>>> 8878d5c229bf653fba854e18f9c6047ee4c6378e
         self.port = find_free_port()
+        self.client = AgentSlack(port=self.port)
+        self.client.start()
+        self.environment_vars = {'SLACK_PORT': self.port}
         
-        client = AgentSlack(port=self.port)
-        client.start() 
-        for world in self.world_agent_mapping:
-            client.register_world(world)
-            for agent in self.world_agent_mapping[world]:
-                client.register_agent(agent, world)
-                
-        self.name: str = 'human_request'
-        self.world_agent_mapping: Dict[str, List[str]]
-        self.environment_vars = {
-            'HUMAN_REQUEST_PATH': 'human_request',
-            'SLACK_CLIENT_SECRET': 'slack_client_secret',
-            'SLACK_CLIENT_ID': 'slack_client_id',
-            'SLACK_BOT_TOKEN': 'slack_bot_token',
-            'SLACK_CHANNEL_ID': 'slack_channel_id',
-            'SLACK_PORT': self.port
-        }
-        super().__init__()
-    
-        
+        if self.world_agent_mapping:
+            for world in self.world_agent_mapping:
+                self.client.register_world(world)
+                for agent in self.world_agent_mapping[world]:
+                    self.client.register_agent(agent, world)
 
     def _init_tool(self, workspace_dir, agent_dirs):
         pass

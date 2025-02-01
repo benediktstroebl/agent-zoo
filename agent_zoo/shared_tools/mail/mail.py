@@ -9,10 +9,7 @@ from .slack_send_dm import send_default_message
 
 @define 
 class Mail(AbstractSharedTool):
-    def __init__(self):
-        super().__init__()
-        self.environment_vars = {'MAIL_DIRECTORY': 'mail'}
-        self.__sub_init__()
+    environment_vars = {'MAIL_DIRECTORY': 'mail'}
 
     def __sub_init__(self):
         pass
