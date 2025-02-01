@@ -1,17 +1,15 @@
-from agent_zoo.zoo import AgentZoo
-from agent_zoo.configs.compute_config import DockerComputeConfig
-from agent_zoo.configs.permissions_config import PermissionsConfig
 from pathlib import Path
 from dotenv import load_dotenv
-from agent_zoo.shared_tools.slack.slack import Slack
+import hydra
+from omegaconf import DictConfig, OmegaConf
+from hydra.utils import instantiate
 
 load_dotenv()
 
-from agent_zoo.shared_tools.mail.mail import Mail
-from agent_zoo.shared_tools.wait.wait_class import Wait
-from agent_zoo.shared_tools.blog.blog import Blog
-from agent_zoo.shared_tools.evaluate_agent.usaco import EvaluateUSACO
-from agent_zoo.shared_tools.evaluate_agent.zygosity import EvaluateZygosity
+from agent_zoo.zoo import AgentZoo
+from agent_zoo.configs.compute_config import DockerComputeConfig
+from agent_zoo.configs.permissions_config import PermissionsConfig
+from agent_zoo.shared_tools import *
 
 def print_ascii_art():
     try:
@@ -20,22 +18,34 @@ def print_ascii_art():
     except FileNotFoundError:
         print("ASCII art file not found")
 
-def main():
+@hydra.main(version_base=None, config_path="configs", config_name="config")
+def main(config: DictConfig):
+    experiment_config = config.experiments
     print_ascii_art()
+
+    shared_tools = []
+    print(experiment_config.shared_tools)
+    for _, tool in experiment_config.shared_tools.items():
+        shared_tools.append(instantiate(tool))
+
+
+    print(experiment_config.agents)
+    agents = []
+    for _, agent in experiment_config.agents.items():
+        agent = instantiate(agent)
+        agent.environment_variables = {
+            "SLACK_BOT_TOKEN": agent.environment_variables["SLACK_BOT_TOKEN"],
+        }
+        agents.append(agent)
+
     
     zoo = AgentZoo(
-        name="math_2_agents_20_minutes_4o",
-        agents=["monkey", "hawk"],
-        tasks=['twindat_sim_1k_24'],
-        compute_config=DockerComputeConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
-        permissions_config=PermissionsConfig(cpu_cores=2, memory_limit="4g", gpu_devices=[0], shared_memory_size="1g", network_mode="bridge"),
-        shared_tools=[
-            Blog(), 
-            Slack(world_agent_mapping=
-                  {
-        "w1": ['monkey', 'hawk']}),
-            EvaluateZygosity()
-        ],
+        name=experiment_config.world_name,
+        agents=agents,
+        tasks=experiment_config.tasks,
+        compute_config=DockerComputeConfig(**experiment_config.compute_config),
+        permissions_config=PermissionsConfig(**experiment_config.permissions_config),
+        shared_tools=shared_tools, # load in from hydra 
         workspace_config_path=Path('agent_zoo/configs/default_workspace.yaml'),
         max_runtime_minutes=60    
         )

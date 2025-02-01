@@ -13,7 +13,14 @@ class Slack(AbstractSharedTool):
     client: AgentSlack = field(default=None)
     environment_vars: dict = field(default=None)
     
+<<<<<<< HEAD
+    def __init__(self, world_agent_mapping: Dict[str, List[str]], port=8080):
+        self.world_agent_mapping = world_agent_mapping
+        
+        # select a free port for the slack client 
+=======
     def __attrs_post_init__(self):
+>>>>>>> 8878d5c229bf653fba854e18f9c6047ee4c6378e
         self.port = find_free_port()
         self.client = AgentSlack(port=self.port)
         self.client.start()

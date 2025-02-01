@@ -12,7 +12,7 @@ class Agent:
     _object_registry: Dict[str, 'Agent'] = {}
     logger = logging.getLogger('agent_zoo')
     
-    def __init__(self, path: Path, name: str, requirements_name: str = 'requirements.txt', entrypoint: str = 'agent.py', environment_variables: Dict[str, str] = {}):
+    def __init__(self, path: Path, name: str, requirements_name: str = 'requirements.txt', entrypoint: str = 'agent.py', environment_variables: Dict[str, str] = {}, agent_args: Dict[str, str] = {}):
         self.path = path
         self.name = name
         self.entrypoint = entrypoint
@@ -24,8 +24,10 @@ class Agent:
         self._register()
         self.logger.info(f"Agent {self.name} initialized")
         self.environment_variables = environment_variables
+        self.agent_args = agent_args
         
     def _register(self):
+        print(Agent._object_registry)
         Agent._object_registry[self.name] = self
         self.logger.debug(f"Agent {self.name} registered")
         
@@ -46,7 +48,7 @@ class Agent:
         # Get all env vars from the shared tools in the workspace
         shared_tools = self.workspace.get_shared_tools()
         shared_tool_env_vars = {key: value for tool in shared_tools for key, value in tool.environment_vars.items()}
-        
+
         self.container_env = self.environment_variables | {
                 **local_env_vars,
                 **shared_tool_env_vars,
@@ -146,8 +148,9 @@ class Agent:
             self.logger.info(f"Initializing agent {self.name}")
             self.initialize()
             
+            print(self.agent_args)
             result = self.container.exec_run(
-                cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"],
+                cmd=["python", f"{self.workspace.get_agent_home(self.name)}/{self.entrypoint}"] + [str(arg) for arg in self.agent_args],
                 environment=self.container_env,
                 detach=False,
                 stream=True
@@ -187,3 +190,6 @@ class Agent:
                 self.logger.info(f"Container for agent {self.name} stopped and removed")
         except Exception as e:
             self.logger.error(f"Error stopping agent {self.name}: {e}")
+
+if __name__=="__main__":
+    agent = Agent(path=Path('agent_zoo/workspace/agents/basic_agent'), name='monkey', requirements_name='requirements.txt', entrypoint='agent.py', environment_variables={'SLACK_BOT_TOKEN': '1234567890'}, agent_args=['--model_name', 'anthropic/claude-3-5-sonnet-20241022', '--temperature', '1.0', '--max_steps', '30'])
