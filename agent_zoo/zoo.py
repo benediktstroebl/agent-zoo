@@ -15,7 +15,7 @@ import logging
 import os
 
 class AgentZoo:
-    def __init__(self, agents: List[Path], shared_tools: List[AbstractSharedTool], tasks: List[Task], 
+    def __init__(self, agents: List[Agent], shared_tools: List[AbstractSharedTool], tasks: List[Task], 
                  compute_config: Union[DockerComputeConfig,List[DockerComputeConfig]], 
                  permissions_config: PermissionsConfig,
                  workspace_config_path: Path = None,
@@ -23,13 +23,12 @@ class AgentZoo:
                  name: str = None):
         self.logger, self.get_container_handler = setup_logging()
         self.agents = agents
-        self.slack_names = agents 
+        self.slack_names = [agent.name for agent in agents]
         self.shared_tools = shared_tools
         self.tasks = Task.get_tasks(tasks)
         self.compute_config = compute_config
         self.permissions_config = permissions_config
         self.workspace_config = WorkspaceConfig.from_yaml(workspace_config_path)
-        self.agents = Agent.get_agents(self.agents)
         self.shared_tools = shared_tools
         self.workspace = Workspace(self.agents, self.workspace_config, self.shared_tools, self.tasks)
         self.max_runtime = max_runtime_minutes * 60 if max_runtime_minutes else None

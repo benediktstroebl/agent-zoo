@@ -2,4 +2,8 @@ python-dotenv
 git+https://github.com/benediktstroebl/smolagents.git@tool_parsing_error
 litellm
 slack_sdk
-agentslack
+agentslack==1.0.4
+
+
+
+

@@ -40,19 +40,6 @@ def read_blog(agent_name: str) -> str:
     except Exception as e:
         return f"Error executing command: {e}"
 
-
-@tool
-def check_mail() -> str:
-    """
-    Check mail for the agent.
-    Make sure to check your mail frequently. 
-    """
-    try:
-        result = subprocess.run(f"check_mail", shell=True, capture_output=True, text=True)
-        return f"{result.stdout}"
-    except Exception as e:
-        return f"Error executing command: {e}"
-
     
 @tool
 def evaluate_joke(joke: str) -> str: # TODO replace default recipient_name 
@@ -659,7 +646,6 @@ def main(model_name: str, temperature: float , max_steps: int, remove_final_answ
         DuckDuckGoSearchTool(), 
         explore_repo, 
         analyze_code, 
-        check_mail, 
         write_to_blog, 
         read_blog,
         send_direct_message,
@@ -671,9 +657,11 @@ def main(model_name: str, temperature: float , max_steps: int, remove_final_answ
         create_channel,
         get_human_info,
         send_message_to_human,
-        add_member_to_channel], model=model, max_steps=max_steps, remove_final_answer_tool=remove_final_answer_tool, stream_json_logs=stream_json_logs, json_logs_path=json_logs_path)
+        add_member_to_channel], 
+        model=model, max_steps=max_steps, remove_final_answer_tool=remove_final_answer_tool, stream_json_logs=stream_json_logs, json_logs_path=json_logs_path)
     
-    agent.run()
+    task_prompt = os.getenv("TASK_PROMPT")
+    agent.run(task_prompt)
 
     # print(agent.run("Can you please setup a new project that has a file with some fake data in it and and then 2-3 scripts that depend on each other that do something with the file and print to the terminal. \n\n The last agent has answered the prompt and set up a project in the current directory. Please figure out how to run it and run it."))
 
