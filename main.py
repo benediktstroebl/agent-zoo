@@ -52,7 +52,7 @@ def main(config: DictConfig):
             )
         zoo.run()
         
-        zoo.clean_up()
+        zoo.clean_up(OmegaConf.to_yaml(config, resolve=True))
 
 if __name__ == "__main__":
     main()

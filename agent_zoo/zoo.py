@@ -13,6 +13,7 @@ from .shared_tools.abstract_tool import AbstractSharedTool
 from .logging_config import setup_logging
 import logging
 import os
+import yaml
 
 class AgentZoo:
     def __init__(self, agents: List[Agent], shared_tools: List[AbstractSharedTool], tasks: List[Task], 
@@ -83,9 +84,9 @@ class AgentZoo:
         except Exception as e:
             self.logger.error(f"Error in agent {agent.name}: {e}")
             
-    def clean_up(self):
-        # Save file to workspace with all settings and configs
+    def clean_up(self, config: Dict):
+        # write config to workspace dir
+        with open(self.workspace.workspace_dir / "config.yaml", "w") as f:
+            yaml.dump(config, f)
         
         
-        # Rename workspace folder with the name of the zoo
-        pass
