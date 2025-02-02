@@ -17,7 +17,7 @@ class EvaluateUSACO(AbstractSharedTool):
 
     def _init_tool(self, workspace_dir, agent_dirs):
         # copy the USACO directory to a evaluate directory
-        shutil.copytree(Path("agent_zoo/tasks/USACO"), os.path.join(workspace_dir, "evaluate/USACO"))
+        shutil.copytree(Path("agent_zoo/tasks/USACO"), os.path.join(workspace_dir, ".evaluate/USACO"))
 
     def _get_tools(self):
         return [evaluate_usaco]
