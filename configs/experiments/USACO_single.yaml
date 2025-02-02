@@ -1,0 +1,27 @@
+defaults:
+  - default
+  - USACO_defaults
+  - _self_
+
+shared_tools: 
+  EvaluateUSACO:
+    _target_: agent_zoo.shared_tools.EvaluateUSACO
+  Blog:
+    _target_: agent_zoo.shared_tools.Blog
+  Slack:
+    _target_: agent_zoo.shared_tools.Slack
+    world_agent_mapping: 
+      ${world_name}:
+        - jamie
+    
+agents:   
+  agent_1: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: jamie
+    requirements_name: requirements.txt
+    entrypoint: usaco.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: MONKEY_SLACK_BOT_TOKEN
+    agent_args: ${...agent_args}
+  

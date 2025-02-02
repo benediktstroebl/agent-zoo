@@ -1,0 +1,12 @@
+world_name: USACO_single_${.tasks[0]}
+
+tasks: 
+  - 866_platinum_the_cow_gathering
+
+agent_args: 
+  - --model_name
+  - anthropic/claude-3-5-sonnet-20241022
+  - --temperature
+  - 0.7
+  - --max_steps
+  - 30

@@ -11,5 +11,3 @@ permissions_config:
   gpu_devices: [0]
   shared_memory_size: 1g
   network_mode: bridge
-
-repetitions: 1
