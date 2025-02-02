@@ -81,7 +81,8 @@ class Agent:
                 environment=self.container_env,
                 network_mode="host",
                 detach=True,
-                name=f"agent_zoo_{self.name}_{uuid.uuid4()}"
+                name=f"agent_zoo_{self.name}_{uuid.uuid4()}",
+                working_dir=f"/home/{self.name}"
             )
         
         # print env variables availabel in container 
@@ -183,8 +184,8 @@ class Agent:
         """Stop the agent and its container"""
         try:
             if hasattr(self, 'container'):
-                # self.container.stop()
-                # self.container.remove()
+                self.container.stop()
+                self.container.remove()
                 self.logger.info(f"Container for agent {self.name} stopped and removed")
         except Exception as e:
             self.logger.error(f"Error stopping agent {self.name}: {e}")
