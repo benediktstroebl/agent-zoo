@@ -39,8 +39,8 @@ def main(config: DictConfig):
         }
         agents.append(agent)
     
-    for i in range(config.repetitions):
-        print(f"Running experiment {i+1} of {config.repetitions} for {experiment_config.world_name}")
+    for i in range(experiment_config.repetitions):
+        print(f"Running experiment {i+1} of {experiment_config.repetitions} for {experiment_config.world_name}")
         zoo = AgentZoo(
             name=experiment_config.world_name,
             agents=agents,

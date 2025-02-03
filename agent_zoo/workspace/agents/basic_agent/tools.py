@@ -619,7 +619,7 @@ def list_channels() -> str:
 @tool
 def create_channel(channel_name: str) -> str:
     """
-    Create a new channel.
+    Create a new channel. Note, other agents will not be added to the channel automatically. You can add them manually using the add_member_to_channel tool.
     Args:
         channel_name: The name of the channel to create
     """
