@@ -17,6 +17,32 @@ from agentslack import AgentSlack
 slack = AgentSlack(port=os.getenv("SLACK_PORT"))
 
 @tool
+def check_messages() -> str:
+    """
+    Checks for new messages in the agent's mailbox.
+    """
+    try:
+        result = subprocess.run(f"check_mail", shell=True, capture_output=True, text=True)
+        return f"{result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(result.stderr)}"
+
+@tool
+def send_message(msg: str, recipient_name: str) -> str:
+    """
+    Send a message to another agent.
+    Args:
+        msg: The message to send
+        recipient_name: The name of the agent to send the mail to
+    """
+    try:
+        result = subprocess.run(["send_message", "--recipient_name", recipient_name, "--msg", msg], 
+                              capture_output=True, text=True)
+        return f"{result.stdout}"
+    except Exception as e:
+        return f"Error executing command: {str(result.stderr)}"
+
+@tool
 def write_to_blog(blog_content: str) -> str:
     """
     Write to the blog of an agent.
