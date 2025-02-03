@@ -5,6 +5,9 @@ slack_sdk
 agentslack==1.0.4
 pandas
 scikit-learn
+autogen-agentchat>=0.4.5
+autogen-ext[magentic-one,openai]>=0.4.5
+rich>=13.9.4
 
 
 

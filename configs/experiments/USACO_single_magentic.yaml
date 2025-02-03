@@ -1,0 +1,24 @@
+defaults:
+  - default
+  - USACO_defaults
+  - _self_
+
+shared_tools: 
+  EvaluateUSACO:
+    _target_: agent_zoo.shared_tools.EvaluateUSACO
+  Blog:
+    _target_: agent_zoo.shared_tools.Blog
+  Mail:
+    _target_: agent_zoo.shared_tools.Mail
+    
+agents:   
+  agent_1: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/magentic/
+    name: jamie
+    requirements_name: requirements.txt
+    entrypoint: usaco.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: MONKEY_SLACK_BOT_TOKEN
+    agent_args: ${...agent_args}
+  

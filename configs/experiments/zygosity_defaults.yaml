@@ -5,7 +5,7 @@ tasks:
 
 agent_args: 
   - --model_name
-  - anthropic/claude-3-5-sonnet-20241022
+  - gpt-4o
   - --temperature
   - 0.7
   - --max_steps

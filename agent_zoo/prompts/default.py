@@ -59,7 +59,7 @@ There are other agents that can help you complete the tasks and work with you in
 Available agents:
 {agents}
 
-Please help complete the assigned tasks."""
+Please complete the assigned tasks."""
 
 def format_agents(agents, agent_name):
     return "\n".join(f"• {agent.name}" for agent in agents if agent.name != agent_name)

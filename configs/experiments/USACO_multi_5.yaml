@@ -8,6 +8,8 @@ shared_tools:
     _target_: agent_zoo.shared_tools.EvaluateUSACO
   Mail:
     _target_: agent_zoo.shared_tools.Mail
+  Blog:
+    _target_: agent_zoo.shared_tools.Blog
     
 agents:   
   agent_1: 
