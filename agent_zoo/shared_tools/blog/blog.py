@@ -15,7 +15,7 @@ class Blog(AbstractSharedTool):
 
     environment_vars = {
         'BLOG_FORMAT': 'communal' if communal_blog else 'agent',
-        'BLOG_FNAME': 'blog.csv'
+        'BLOG_FNAME': 'blog.txt'
     }
 
     def __sub_init__(self):
