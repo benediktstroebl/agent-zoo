@@ -12,10 +12,10 @@ def evaluate_usaco(python_file, task_name):
                     print("Solution STDERR:", stderr) # Print stderr if any
                 return stdout.strip().splitlines()
         except subprocess.TimeoutExpired:
-            print("Solution timed out for input:", input_file)
+            print("Solution timed out!")
             return ["TIMEOUT_ERROR"] # Indicate timeout
         except FileNotFoundError:
-            print("Error: Solution file", solution_file, "not found.")
+            print("Error: Solution file not found.")
             return ["FILE_NOT_FOUND_ERROR"]
         except Exception as e:
             print("Error running solution:", e)
@@ -48,9 +48,11 @@ def evaluate_usaco(python_file, task_name):
     def test_solution(solution_file, test_cases_path, num_test_cases):
         """Tests the solution against all test cases."""        
         passed_count = 0
+        num_test_cases = int(num_test_cases)
         for i in range(1, num_test_cases + 1):
             input_file = os.path.join(test_cases_path, f"{i}.in")
             expected_output_file = os.path.join(test_cases_path, f"{i}.out")
+            
             print("Running test case", i, ":")
             output_lines = run_solution(solution_file, input_file)
             if output_lines == ["FILE_NOT_FOUND_ERROR"] or output_lines == ["RUNTIME_ERROR"]:
@@ -73,7 +75,7 @@ def evaluate_usaco(python_file, task_name):
         Evaluates the USACO solution. The response should be the path to the solution file.
         """
         
-        test_cases_path = f"/home/evaluate/USACO/tests/{task_name}"
+        test_cases_path = f"/home/.evaluate/USACO/tests/{task_name}"
         
         # Get number of test cases
         num_tests = len([f for f in os.listdir(test_cases_path) if os.path.isfile(os.path.join(test_cases_path, f))])/2

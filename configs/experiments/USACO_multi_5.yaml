@@ -1,0 +1,57 @@
+defaults:
+  - default
+  - USACO_defaults
+  - _self_
+
+shared_tools: 
+  EvaluateUSACO:
+    _target_: agent_zoo.shared_tools.EvaluateUSACO
+  Blog:
+    _target_: agent_zoo.shared_tools.Blog
+    
+agents:   
+  agent_1: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: jamie
+    requirements_name: requirements.txt
+    entrypoint: usaco.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: MONKEY_SLACK_BOT_TOKEN
+    agent_args: ${...agent_args}
+  agent_2: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: robert
+    requirements_name: requirements.txt
+    entrypoint: usaco.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: CAT_SLACK_BOT_TOKEN
+    agent_args: ${...agent_args}
+  agent_3: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: nazli
+    requirements_name: requirements.txt
+    entrypoint: usaco.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: HAWK_SLACK_BOT_TOKEN
+    agent_args: ${...agent_args}
+  agent_4: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: amy
+    requirements_name: requirements.txt
+    entrypoint: usaco.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: ZEBRA_SLACK_BOT_TOKEN
+    agent_args: ${...agent_args}
+  agent_5: 
+    _target_: agent_zoo.agents.Agent
+    path: agent_zoo/workspace/agents/basic_agent/
+    name: victoria
+    requirements_name: requirements.txt
+    entrypoint: usaco.py
+    environment_variables: 
+      SLACK_BOT_TOKEN: GIRAFFE_SLACK_BOT_TOKEN
+    agent_args: ${...agent_args}

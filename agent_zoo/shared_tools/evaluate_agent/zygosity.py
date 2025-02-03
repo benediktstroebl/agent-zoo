@@ -18,7 +18,7 @@ class EvaluateZygosity(AbstractSharedTool):
 
     def _init_tool(self, workspace_dir, agent_dirs):
         # copy the USACO directory to a evaluate directory
-        shutil.copytree(Path("agent_zoo/tasks/zygosity"), os.path.join(workspace_dir, "evaluate/zygosity"))
+        shutil.copytree(Path("agent_zoo/tasks/zygosity"), os.path.join(workspace_dir, ".evaluate/zygosity"))
         
         # find csv files with _train and _test in the name
         train_csv = next((f for f in os.listdir(os.path.join("agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode")) if f.endswith("_train.csv")), None)

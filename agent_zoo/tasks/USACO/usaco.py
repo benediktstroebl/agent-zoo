@@ -115,7 +115,7 @@ with open("agent_zoo/tasks/USACO/usaco_subset307_dict.json", "r") as f:
     benchmark = json.load(f)
 
 # get all problem ids of platinum tasks
-platinum_tasks = [problem_id for problem_id in benchmark if benchmark[problem_id]["problem_level"] == "platinum"]
+platinum_tasks = [problem_id for problem_id in benchmark]
 
 # create a USACOTask for each platinum task
 platinum_tasks_tasks = [USACOTask(problem_id) for problem_id in platinum_tasks]

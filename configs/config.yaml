@@ -1,11 +1,15 @@
 defaults:
   - _self_
-  - experiments: basic
+  - experiments: USACO_single
+  - override hydra/launcher: joblib
 
-
-experiment_runs:
-  basic: 1
-  zygosity: 1
-  USACO: 1
-
-
+hydra:
+  launcher:
+    n_jobs: 1
+  # mode: MULTIRUN
+  # sweeper:
+  #   params:
+  #     experiments: USACO_single
+  #     experiments.tasks: 
+  # ['945_gold_snakes'],['966_silver_moobuzz'],['857_bronze_back_and_forth'],['794_platinum_sprinklers']
+repetitions: 1

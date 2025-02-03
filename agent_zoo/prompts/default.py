@@ -53,7 +53,7 @@ USACO_PROMPT = """You are {agent_name}, a helpful AI assistant. You are asked to
 Tasks: 
 {tasks}
 
-You can evaluate your solution using the evaluate tools available to you. Do only submit your solution if the evaluation is successful.
+You can evaluate your solution using the evaluate tools available to you. Do only submit your solution if the evaluation is successful. Do not use the final answer tool except it your solution passes all the test cases using the `evaluate_code` tool.
 
 There are other agents that can help you complete the tasks and work with you in the same workspace.
 Available agents:
