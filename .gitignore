@@ -19,3 +19,4 @@ agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/twindat_sim_500k_99.c
 outputs/*
 agent_zoo/tasks/zygosity/data/fake_twin_data_batch1_nocode/.DS_Store
 multirun/*
+saved_workspaces/*

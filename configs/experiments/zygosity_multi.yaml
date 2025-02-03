@@ -1,13 +1,24 @@
 defaults:
   - default
-  - USACO_defaults
+  - zygosity_defaults
   - _self_
 
 shared_tools: 
-  EvaluateUSACO:
-    _target_: agent_zoo.shared_tools.EvaluateUSACO
+  EvaluateZygosity:
+    _target_: agent_zoo.shared_tools.EvaluateZygosity
+  Blog:
+    _target_: agent_zoo.shared_tools.Blog
   Mail:
     _target_: agent_zoo.shared_tools.Mail
+  # Slack:
+  #   _target_: agent_zoo.shared_tools.Slack
+  #   world_agent_mapping: 
+  #     ${world_name}:
+  #       - jamie
+  #       - robert
+  #       - nazli
+  #       - amy
+  #       - victoria
     
 agents:   
   agent_1: 
@@ -15,7 +26,7 @@ agents:
     path: agent_zoo/workspace/agents/basic_agent/
     name: jamie
     requirements_name: requirements.txt
-    entrypoint: usaco.py
+    entrypoint: zygosity.py
     environment_variables: 
       SLACK_BOT_TOKEN: MONKEY_SLACK_BOT_TOKEN
     agent_args: ${...agent_args}
@@ -24,7 +35,7 @@ agents:
     path: agent_zoo/workspace/agents/basic_agent/
     name: robert
     requirements_name: requirements.txt
-    entrypoint: usaco.py
+    entrypoint: zygosity.py
     environment_variables: 
       SLACK_BOT_TOKEN: CAT_SLACK_BOT_TOKEN
     agent_args: ${...agent_args}
@@ -33,7 +44,7 @@ agents:
     path: agent_zoo/workspace/agents/basic_agent/
     name: nazli
     requirements_name: requirements.txt
-    entrypoint: usaco.py
+    entrypoint: zygosity.py
     environment_variables: 
       SLACK_BOT_TOKEN: HAWK_SLACK_BOT_TOKEN
     agent_args: ${...agent_args}
@@ -42,7 +53,7 @@ agents:
     path: agent_zoo/workspace/agents/basic_agent/
     name: amy
     requirements_name: requirements.txt
-    entrypoint: usaco.py
+    entrypoint: zygosity.py
     environment_variables: 
       SLACK_BOT_TOKEN: ZEBRA_SLACK_BOT_TOKEN
     agent_args: ${...agent_args}
@@ -51,7 +62,7 @@ agents:
     path: agent_zoo/workspace/agents/basic_agent/
     name: victoria
     requirements_name: requirements.txt
-    entrypoint: usaco.py
+    entrypoint: zygosity.py
     environment_variables: 
       SLACK_BOT_TOKEN: GIRAFFE_SLACK_BOT_TOKEN
     agent_args: ${...agent_args}

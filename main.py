@@ -23,6 +23,7 @@ def print_ascii_art():
 def main(config: DictConfig):
     print_ascii_art()
     
+    print(OmegaConf.to_yaml(config, resolve=True))
 
     experiment_config = config.experiments
     shared_tools = []
@@ -51,8 +52,7 @@ def main(config: DictConfig):
             max_runtime_minutes=60    
             )
         zoo.run()
+        zoo.clean_up(config)
         
-        zoo.clean_up(OmegaConf.to_yaml(config, resolve=True))
-
 if __name__ == "__main__":
     main()

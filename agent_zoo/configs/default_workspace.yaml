@@ -1,5 +1,5 @@
 base_dir: "workspaces"
-prompt: "usaco"
+prompt: "default"
 
 # Agent-specific directory structure
 agent_directories:
